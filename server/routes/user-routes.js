@@ -15,7 +15,7 @@ const responseCodes = require("../models/response-codes");
 
 
 // This section will help you get a list of all the records.
-userRoutes.route("/user").get(function (req, res) {
+userRoutes.route("/api/users").get(function (req, res) {
     let db_connect = dbo.getDb("cattylovedb");
     db_connect
         .collection("users")
@@ -27,7 +27,7 @@ userRoutes.route("/user").get(function (req, res) {
 });
 
 // This section will help you get a single record by id
-userRoutes.route("/user/:id").get(function (req, res) {
+userRoutes.route("/api/users/:id").get(function (req, res) {
     let db_connect = dbo.getDb();
     let myquery = { uid: req.params.id };
     db_connect
@@ -39,7 +39,7 @@ userRoutes.route("/user/:id").get(function (req, res) {
 });
 
 // This section will help you create a new record.
-userRoutes.route("/user/add").post(function (req, response) {
+userRoutes.route("/api/users/add").post(function (req, response) {
     let db_connect = dbo.getDb();
     let myobj = {
         uid: req.body.uid,
@@ -57,7 +57,7 @@ userRoutes.route("/user/add").post(function (req, response) {
 
 //FIXME: Fix user not updating issues.
 // This section will help you update a record by id.
-userRoutes.route("/user/update/:id").put(function (req, response) {
+userRoutes.route("/api/users/update/:id").put(function (req, response) {
     let db_connect = dbo.getDb();
     let myquery = { uid: req.params.uid };
     let newvalues = {
@@ -81,7 +81,7 @@ userRoutes.route("/user/update/:id").put(function (req, response) {
 
 //TODO: delete user by uid
 // This section will help you delete a record
-userRoutes.route("/user/:id").delete((req, response) => {
+userRoutes.route("/api/users/:id").delete((req, response) => {
     let db_connect = dbo.getDb();
     let myquery = { _id: ObjectId(req.params.id) };
     db_connect.collection("users").deleteOne(myquery, function (err, obj) {

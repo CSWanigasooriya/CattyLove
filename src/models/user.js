@@ -6,4 +6,8 @@ export class User {
     photoURL = '';
     phoneNumber = null;
     email = '';
+    metadata = {
+        creationTime: '',
+        lastSignInTime: '',
+    }
 }
