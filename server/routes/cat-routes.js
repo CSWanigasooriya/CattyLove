@@ -1,9 +1,9 @@
 const express = require("express");
 
-// userRoutes is an instance of the express router.
+// recordRoutes is an instance of the express router.
 // We use it to define our routes.
 // The router will be added as a middleware and will take control of requests starting with path /record.
-const userRoutes = express.Router();
+const catRoutes = express.Router();
 
 // This will help us connect to the database
 const dbo = require("../db/conn");
@@ -13,12 +13,11 @@ const ObjectId = require("mongodb").ObjectId;
 
 const responseCodes = require("../models/response-codes");
 
-
 // This section will help you get a list of all the records.
-userRoutes.route("/api/users").get(function (req, res) {
+catRoutes.route("/api/cats").get(function (req, res) {
     let db_connect = dbo.getDb("cattylovedb");
     db_connect
-        .collection("users")
+        .collection("cats")
         .find({})
         .toArray(function (err, result) {
             if (err) throw err;
@@ -27,11 +26,12 @@ userRoutes.route("/api/users").get(function (req, res) {
 });
 
 // This section will help you get a single record by id
-userRoutes.route("/api/users/:id").get(function (req, res) {
+// GET specific cat
+catRoutes.route("/api/cats/:id").get(function (req, res) {
     let db_connect = dbo.getDb();
     let myquery = { uid: req.params.id };
     db_connect
-        .collection("users")
+        .collection("cats")
         .findOne(myquery, function (err, result) {
             if (err) throw err;
             res.status(responseCodes.ok).json(result);
@@ -39,38 +39,39 @@ userRoutes.route("/api/users/:id").get(function (req, res) {
 });
 
 // This section will help you create a new record.
-userRoutes.route("/api/users/add").post(function (req, response) {
+// Admin -> create cat post
+catRoutes.route("/api/cats/add").post(function (req, response) {
     let db_connect = dbo.getDb();
     let myobj = {
         uid: req.body.uid,
         displayName: req.body.displayName,
-        lastLogin: req.body.lastLogin,
+        gender: req.body.gender,
+        description: req.body.description,
+        likes: req.body.likes,
         photoURL: req.body.photoURL,
-        phoneNumber: req.body.phoneNumber,
-        email: req.body.email,
     };
-    db_connect.collection("users").insertOne(myobj, function (err, res) {
+    db_connect.collection("cats").insertOne(myobj, function (err, res) {
         if (err) throw err;
         response.status(responseCodes.ok).json(res);
     });
 });
 
-//FIXME: Fix user not updating issues.
+//FIXME: Fix cat not updating issues.
 // This section will help you update a record by id.
-userRoutes.route("/api/users/update/:id").put(function (req, response) {
+catRoutes.route("/api/cats/update/:id").put(function (req, response) {
     let db_connect = dbo.getDb();
     let myquery = { uid: req.params.uid };
     let newvalues = {
         $set: {
             displayName: req.body.displayName,
-            lastLogin: req.body.lastLogin,
+            gender: req.body.gender,
+            description: req.body.description,
+            likes: req.body.likes,
             photoURL: req.body.photoURL,
-            phoneNumber: req.body.phoneNumber,
-            email: req.body.email,
         },
     };
     db_connect
-        .collection("users")
+        .collection("cats")
         .updateOne(myquery, newvalues, function (err, res) {
             if (err) throw err;
             console.log("1 document updated");
@@ -79,16 +80,17 @@ userRoutes.route("/api/users/update/:id").put(function (req, response) {
 });
 
 
-//TODO: delete user by uid
+//TODO: delete car by uid
 // This section will help you delete a record
-userRoutes.route("/api/users/:id").delete((req, response) => {
+// Admin -> DELETE cat post
+catRoutes.route("/api/cats/:id").delete((req, response) => {
     let db_connect = dbo.getDb();
     let myquery = { _id: ObjectId(req.params.id) };
-    db_connect.collection("users").deleteOne(myquery, function (err, obj) {
+    db_connect.collection("cats").deleteOne(myquery, function (err, obj) {
         if (err) throw err;
         console.log("1 document deleted");
         response.status(responseCodes.ok).json(obj);
     });
 });
 
-module.exports = userRoutes;
+module.exports = catRoutes;
