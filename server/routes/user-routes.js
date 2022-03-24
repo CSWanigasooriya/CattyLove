@@ -11,6 +11,8 @@ const dbo = require("../db/conn");
 // This help convert the id from string to ObjectId for the _id.
 const ObjectId = require("mongodb").ObjectId;
 
+const responseCodes = require("../models/response-codes");
+
 
 // This section will help you get a list of all the records.
 userRoutes.route("/user").get(function (req, res) {
@@ -20,7 +22,7 @@ userRoutes.route("/user").get(function (req, res) {
         .find({})
         .toArray(function (err, result) {
             if (err) throw err;
-            res.json(result);
+            res.status(responseCodes.ok).json(result);
         });
 });
 
@@ -32,7 +34,7 @@ userRoutes.route("/user/:id").get(function (req, res) {
         .collection("users")
         .findOne(myquery, function (err, result) {
             if (err) throw err;
-            res.json(result);
+            res.status(responseCodes.ok).json(result);
         });
 });
 
@@ -49,7 +51,7 @@ userRoutes.route("/user/add").post(function (req, response) {
     };
     db_connect.collection("users").insertOne(myobj, function (err, res) {
         if (err) throw err;
-        response.json(res);
+        response.status(responseCodes.ok).json(res);
     });
 });
 
@@ -72,7 +74,7 @@ userRoutes.route("/user/update/:id").put(function (req, response) {
         .updateOne(myquery, newvalues, function (err, res) {
             if (err) throw err;
             console.log("1 document updated");
-            response.json(res);
+            response.status(responseCodes.ok).json(res);
         });
 });
 
@@ -85,7 +87,7 @@ userRoutes.route("/user/:id").delete((req, response) => {
     db_connect.collection("users").deleteOne(myquery, function (err, obj) {
         if (err) throw err;
         console.log("1 document deleted");
-        response.json(obj);
+        response.status(responseCodes.ok).json(obj);
     });
 });
 
