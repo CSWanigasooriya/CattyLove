@@ -1,14 +1,17 @@
-//100 Series
-//These are temporary responses
 //TODO: Add more error codes
 module.exports = {
     //100 Series
-    //These are temporary responses
+    // These are temporary Responses
+
+
     continue: 100,
     switchingProtocols: 101,
     processing: 102,
 
     //200 Series
+    // The client accepts the Request, being processed successfully at the server.
+
+
     ok: 200,
     created: 201,
     accepted: 202,
@@ -21,6 +24,9 @@ module.exports = {
     imUsed: 226,
 
     //300 Series
+    // Most of the codes related to this series are for URL Redirection.
+
+
     multipleChoices: 300,
     movedPermanently: 301,
     found: 302,
@@ -32,6 +38,9 @@ module.exports = {
     permanentRedirect: 308,
 
     //400 Series
+    // These are specific to client-side error.
+
+
     badRequest: 400,
     unauthorized: 401,
     paymentRequired: 402,
@@ -62,6 +71,9 @@ module.exports = {
     unavailableForLegalReasons: 451,
 
     //500 Series
+    // These are specific to the server-side error.
+
+
     internalServerError: 500,
     notImplemented: 501,
     badGateway: 502,
