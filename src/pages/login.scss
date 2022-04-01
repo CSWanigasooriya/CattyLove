@@ -1,0 +1,96 @@
+$primary-color: #1976d2;
+$text-accent: #666666;
+$text-red: #af001f;
+
+* {
+  margin: 0;
+}
+
+body {
+  background-color: $primary-color;
+}
+
+.loginCard {
+  width: 60em;
+  height: 35em;
+  position: absolute;
+  border-radius: 1em !important;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+}
+
+.contentWrapper {
+  padding: 2em;
+}
+
+.catimage {
+  height: 300px;
+  width: 300px;
+}
+
+.logoName {
+  color: $primary-color;
+  font-weight: normal;
+  font-size: 1.5em;
+}
+
+.logintextWrapper {
+  padding-bottom: 2em;
+}
+
+.logintext {
+  font-weight: 500;
+  font-size: 1.5em;
+}
+
+.logindescrip {
+  color: $text-accent;
+}
+
+.headerWrapper {
+  display: flex;
+  align-items: center;
+  padding-bottom: 1em;
+}
+
+.cattlovelogo {
+  height: 50px;
+  width: 50px;
+}
+
+.terms-and-conditions {
+  padding-bottom: 1em;
+}
+
+.loginbtn {
+  padding-bottom: 20px;
+  text-decoration: none;
+  width: 28.5em;
+  height: 3.5em;
+}
+
+.linksWrapper {
+  padding-top: 1em;
+  justify-content: space-evenly;
+}
+
+.account {
+  color: $primary-color;
+  padding-right: 1em;
+  text-decoration: none;
+}
+
+.password {
+  color: $text-red;
+  text-decoration: none;
+}
+
+.loginbackWrapper {
+  height: 35em;
+  border-radius: 1em !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
