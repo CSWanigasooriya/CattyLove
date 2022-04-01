@@ -5,6 +5,7 @@ import Login from "../pages/login";
 const routes = (
     <Routes>
         <Route path="/" element={<Login />} />
+
     </Routes>
 );
 
