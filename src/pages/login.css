@@ -1,22 +1,45 @@
+* {
+  margin: 0;
+}
+
 body {
   background-color: #1976d2;
+}
+
+.loginCard {
+  width: 60em;
+  height: 35em;
+  position: absolute;
+  border-radius: 1em !important;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+
+.contentWrapper {
+  padding: 2em;
 }
 
 .catimage {
   height: 300px;
   width: 300px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .logoName {
   color: #1976d2;
   font-weight: normal;
+  font-size: 1.5em;
 }
 
-.login {
-  font-weight: normal;
+.logintextWrapper {
+  padding-bottom: 2em;
+}
+
+.logintext {
+  font-weight: 500;
+  font-size: 1.5em;
 }
 
 .logindescrip {
@@ -30,6 +53,7 @@ body {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  padding-bottom: 1em;
 }
 
 .cattlovelogo {
@@ -37,33 +61,55 @@ body {
   width: 50px;
 }
 
-.fieldsWrapper {
-  display: inline-block;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: wrap;
-          flex-direction: wrap;
+.terms-and-conditions {
+  padding-bottom: 1em;
+}
+
+.loginbtn {
+  padding-bottom: 20px;
+  text-decoration: none;
+  width: 28.5em;
+  height: 3.5em;
 }
 
 .linksWrapper {
+  padding-top: 1em;
   -webkit-box-pack: space-evenly;
       -ms-flex-pack: space-evenly;
           justify-content: space-evenly;
 }
 
-.loginbtn {
-  padding-bottom: 20px;
-  width: 100px;
-}
-
 .account {
   color: #1976d2;
+  padding-right: 1em;
   text-decoration: none;
-  padding-right: 10px;
 }
 
 .password {
-  color: #AF001F;
+  color: #af001f;
   text-decoration: none;
+}
+
+.loginbackWrapper {
+  height: 35em;
+  border-radius: 1em !important;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+@media only screen and (max-width: 1000px) {
+  .loginCard {
+    width: 30em;
+  }
+  .loginbackWrapper {
+    display: none;
+  }
 }
 /*# sourceMappingURL=login.css.map */

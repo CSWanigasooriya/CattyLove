@@ -94,3 +94,12 @@ body {
   justify-content: center;
   align-items: center;
 }
+
+@media only screen and (max-width: 1000px) {
+  .loginCard {
+    width: 30em;
+  }
+  .loginbackWrapper {
+    display:none;
+  }
+}
