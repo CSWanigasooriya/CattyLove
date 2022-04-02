@@ -20,6 +20,7 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Feed from '../../components/Feed';
 import './Home.css';
 
@@ -30,6 +31,8 @@ const drawerWidth = 240;
 
 
 function ResponsiveDrawer(props) {
+
+    const navigate = useNavigate();
     const { window } = props;
     const [auth, setAuth] = React.useState(true);
     const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -50,6 +53,7 @@ function ResponsiveDrawer(props) {
 
     const handleClose = () => {
         setAnchorEl(null);
+        signOut()
     };
 
     const handleDrawerToggle = () => {
@@ -65,6 +69,12 @@ function ResponsiveDrawer(props) {
         })
         const data = await response.json();
         setCats([...data])
+    }
+
+
+    function signOut() {
+        localStorage.removeItem('token');
+        navigate('/');
     }
 
 
@@ -110,12 +120,12 @@ function ResponsiveDrawer(props) {
                         aria-label="open drawer"
                         edge="start"
                         onClick={handleDrawerToggle}
-                        sx={{ mr: 2, display: { sm: 'none' } }}
+                        sx={{ mr: 2 }}
                     >
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-                        Responsive drawer
+
                     </Typography>
 
                     {auth && (

@@ -8,13 +8,13 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import Collapse from '@mui/material/Collapse';
-import { red, blue, green } from '@mui/material/colors';
+import { blue, red } from '@mui/material/colors';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import React, { useState } from 'react';
+import React from 'react';
 
 //name, gender, description, no of likes the cat has, and a profile picture.
 
@@ -62,14 +62,19 @@ export default function Feed(props) {
     };
 
     const handleLikeButtonClick = () => {
-        const uid = localStorage.getItem('token');
-        if (uid === null || uid == '') {
+        const jwtToken = localStorage.getItem('token');
+        if (!isAuthenticated()) {
             alert('Please login to like this cat');
         } else if (props.data.likedBy.length > 0) {
-            Array.from(props.data.likedBy).map(user => {
-                if (user === uid) {
+            Array.from(props.data.likedBy).map(userToken => {
+                if (userToken === jwtToken) {
                     setLike(false)
                     dislikeCat()
+                    window.location.reload();
+                    return;
+                } else {
+                    setLike(true)
+                    likeCat()
                     window.location.reload();
                     return;
                 }
@@ -85,6 +90,15 @@ export default function Feed(props) {
         setAnchorEl(null);
     };
 
+    function isAuthenticated() {
+        const jwtToken = localStorage.getItem('token');
+        if (jwtToken === null || jwtToken === undefined) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     async function likeCat() {
         const response = await fetch(`http://localhost:4000/api/cats/${props.data.cid}/like/`, {
             method: 'POST',
@@ -95,7 +109,6 @@ export default function Feed(props) {
                 uid: localStorage.getItem('token'),
             }),
         })
-        const data = await response.json();
     }
 
     async function dislikeCat() {
@@ -108,7 +121,6 @@ export default function Feed(props) {
                 uid: localStorage.getItem('token'),
             }),
         })
-        const data = await response.json();
     }
 
 
@@ -156,11 +168,9 @@ export default function Feed(props) {
             </CardContent>
             <CardActions disableSpacing>
                 {/* <Button onClick={handleLikeButtonClick} sx={{ color: liked ? blue[500] : blue[200] }}> */}
-                <Button onClick={handleLikeButtonClick} sx={{ color: blue[500] }}>
+                <Button onClick={handleLikeButtonClick} sx={{ color: blue[700] }}>
                     <ThumbUp sx={{ mr: 1 }} />
-                    <Typography>
-                        {props.data.likedBy.length} Likes
-                    </Typography>
+                    {props.data.likedBy.length} {props.data.likedBy.length === 1 ? 'like' : 'likes'}
                 </Button>
                 <ExpandMore
                     expand={expanded}
