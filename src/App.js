@@ -1,5 +1,5 @@
-import './App.scss';
-import * as React from 'react';
+import './App.css';
+import React from 'react';
 import Layout from './layout/Layout';
 
 function App() {
