@@ -7,7 +7,7 @@ const Cat = new mongoose.Schema({
     gender: { type: String, required: true },
     description: { type: String, required: true },
     photoURL: { type: String, required: true },
-    likedBy: { type: Array, "default": [], unique: true }
+    likedBy: { type: Array, "default": [] }
 }, {
     timestamps: true,
     collection: 'cats'

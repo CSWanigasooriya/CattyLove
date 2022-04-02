@@ -58,6 +58,7 @@ export default function Feed(props) {
     const handleMenuItemClick = (event, index) => {
         setSelectedIndex(index);
         setAnchorEl(null);
+        addToWishlist()
     };
 
     const handleLikeButtonClick = () => {
@@ -69,7 +70,7 @@ export default function Feed(props) {
             Array.from(props.data.likedBy).map(id => {
                 if (id === uid) {
                     setLike(false)
-                    dislikeCat()
+                    unlikeCat()
                     window.location.reload();
                     return;
                 } else {
@@ -111,7 +112,7 @@ export default function Feed(props) {
         })
     }
 
-    async function dislikeCat() {
+    async function unlikeCat() {
         const response = await fetch(`http://localhost:4000/api/cats/${props.data.cid}/unlike/`, {
             method: 'POST',
             headers: {
@@ -119,6 +120,36 @@ export default function Feed(props) {
             },
             body: JSON.stringify({
                 uid: localStorage.getItem('uid')
+            }),
+        })
+    }
+
+    async function addToWishlist() {
+        const uid = localStorage.getItem('uid');
+
+        const response = await fetch(`http://localhost:4000/api/users/${uid}/add/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                uid: localStorage.getItem('uid'),
+                cid: props.data.cid
+            }),
+        })
+    }
+
+    async function removeFromWishlist() {
+        const uid = localStorage.getItem('uid');
+
+        const response = await fetch(`http://localhost:4000/api/users/${uid}/remove/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                uid: localStorage.getItem('uid'),
+                cid: props.data.cid
             }),
         })
     }

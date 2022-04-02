@@ -9,20 +9,63 @@ const responseCodes = require("../models/response-codes");
 const User = require("../models/user.model");
 
 
-userRoutes.route("/api/users").get(function (req, res) {
-
+userRoutes.route("/api/users").get(async (req, res) => {
+    try {
+        const user = await User.find();
+        res.status(responseCodes.ok).json(user);
+    }
+    catch (err) {
+        res.json({ status: "error", error: err.message });
+    }
 });
 
-userRoutes.route("/api/users/:id").get(function (req, res) {
-
+userRoutes.route("/api/users/:uid").get(async (req, res) => {
+    try {
+        const user = await User.findOne(
+            {
+                uid: req.params.uid
+            }
+        );
+        res.status(responseCodes.ok).json(user);
+    }
+    catch (err) {
+        res.json({ status: "error", error: err.message });
+    }
 });
 
-userRoutes.route("/api/users/add").post(function (req, response) {
-
+userRoutes.route("/api/users/:uid/add").post(async (req, response) => {
+    try {
+        const user = await User.findOneAndUpdate(
+            {
+                _id: req.params.uid
+            },
+            {
+                $addToSet: { wishlist: req.body.cid }
+            }
+        );
+        response.status(responseCodes.ok).json(user);
+    }
+    catch (err) {
+        response.json({ status: "error", error: err.message });
+    }
 });
 
-userRoutes.route("/api/users/:id").delete((req, response) => {
+userRoutes.route("/api/users/:uid/remove").post(async (req, response) => {
+    try {
+        const user = await User.findOneAndUpdate(
+            {
+                _id: req.params.uid
+            },
+            {
+                $addToSet: { wishlist: req.body.cid }
+            },
 
+        );
+        res.status(responseCodes.ok).json(user);
+    }
+    catch (err) {
+        res.json({ status: "error", error: err.message });
+    }
 });
 
 module.exports = userRoutes;
