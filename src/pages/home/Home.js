@@ -73,6 +73,7 @@ function ResponsiveDrawer(props) {
 
 
     function signOut() {
+        localStorage.removeItem('uid');
         localStorage.removeItem('token');
         navigate('/');
     }

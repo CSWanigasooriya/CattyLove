@@ -15,7 +15,6 @@ import MenuItem from '@mui/material/MenuItem';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import React from 'react';
-
 //name, gender, description, no of likes the cat has, and a profile picture.
 
 const ExpandMore = styled((props) => {
@@ -62,12 +61,13 @@ export default function Feed(props) {
     };
 
     const handleLikeButtonClick = () => {
-        const jwtToken = localStorage.getItem('token');
+        const uid = localStorage.getItem('uid');
+
         if (!isAuthenticated()) {
             alert('Please login to like this cat');
         } else if (props.data.likedBy.length > 0) {
-            Array.from(props.data.likedBy).map(userToken => {
-                if (userToken === jwtToken) {
+            Array.from(props.data.likedBy).map(id => {
+                if (id === uid) {
                     setLike(false)
                     dislikeCat()
                     window.location.reload();
@@ -94,19 +94,19 @@ export default function Feed(props) {
         const jwtToken = localStorage.getItem('token');
         if (jwtToken === null || jwtToken === undefined) {
             return false;
-        } else {
-            return true;
         }
+        return true;
     }
 
     async function likeCat() {
+
         const response = await fetch(`http://localhost:4000/api/cats/${props.data.cid}/like/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                uid: localStorage.getItem('token'),
+                uid: localStorage.getItem('uid'),
             }),
         })
     }
@@ -118,7 +118,7 @@ export default function Feed(props) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                uid: localStorage.getItem('token'),
+                uid: localStorage.getItem('uid')
             }),
         })
     }

@@ -47,7 +47,8 @@ function Auth() {
 
         const jsonData = await repsonse.json();
 
-        if (jsonData.user) {
+        if (jsonData.uid) {
+            localStorage.setItem('uid', jsonData.uid);
             localStorage.setItem('token', jsonData.token);
             navigate('/home');
         }

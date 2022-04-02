@@ -11,6 +11,7 @@ const responseCodes = require("../models/response-codes");
 
 const User = require("../models/user.model");
 
+
 authRoutes.route("/api/auth/register").post(async (req, res) => {
     try {
         const user = await User.create({
@@ -33,10 +34,11 @@ authRoutes.route("/api/auth/login").post(async (req, res) => {
         });
         if (user) {
             const token = jwt.sign({
+                uid: user._id,
                 email: req.body.email,
                 password: req.body.password,
             }, process.env.JWT_SECRET);
-            res.status(responseCodes.ok).json({ user, token });
+            res.status(responseCodes.ok).json({ uid: user._id, token });
         }
 
     }
