@@ -7,12 +7,6 @@ const authRoutes = express.Router();
 require("dotenv").config({ path: "./config.env" });
 const jwt = require('jsonwebtoken');
 
-// This will help us connect to the database
-const dbo = require("../db/conn");
-
-// This help convert the id from string to ObjectId for the _id.
-const ObjectId = require("mongodb").ObjectId;
-
 const responseCodes = require("../models/response-codes");
 const User = require("../models/user.model");
 

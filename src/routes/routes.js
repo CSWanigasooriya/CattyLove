@@ -7,7 +7,7 @@ const routes = (
     <Routes>
         <Route path="/" element={<Auth />} />
         <Route path="/auth" element={<Auth />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/home" element={<Dashboard />} />
     </Routes>
 );
 

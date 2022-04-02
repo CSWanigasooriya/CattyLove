@@ -5,11 +5,8 @@ const express = require("express");
 // The router will be added as a middleware and will take control of requests starting with path /record.
 const userRoutes = express.Router();
 
-// This will help us connect to the database
-const dbo = require("../db/conn");
+const User = require("../models/user.model");
 
-// This help convert the id from string to ObjectId for the _id.
-const ObjectId = require("mongodb").ObjectId;
 
 const responseCodes = require("../models/response-codes");
 
