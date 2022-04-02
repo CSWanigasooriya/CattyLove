@@ -18,11 +18,11 @@ catRoutes.route("/api/cats").get(async (req, res) => {
     }
 });
 
-catRoutes.route("/api/cats/:id").get(async (req, res) => {
+catRoutes.route("/api/cats/:cid").get(async (req, res) => {
     try {
         const cat = await Cat.findOne(
             {
-                id: req.params.id
+                cid: req.params.cid
             }
         );
         res.status(responseCodes.ok).json(cat);
@@ -36,12 +36,11 @@ catRoutes.route("/api/cats/:id").get(async (req, res) => {
 catRoutes.route("/api/cats").post(async (req, res) => {
     try {
         const cat = await Cat.create({
-            id: req.body.id,
+            cid: req.body.cid,
             displayName: req.body.displayName,
             gender: req.body.gender,
             description: req.body.description,
             photoUrl: req.body.photoUrl,
-            likes: req.body.likes,
         });
         res.status(responseCodes.ok).json(cat);
     }
@@ -51,10 +50,48 @@ catRoutes.route("/api/cats").post(async (req, res) => {
 });
 
 
-catRoutes.route("/api/cats/:id").delete(async (req, res) => {
+catRoutes.route("/api/cats/:cid/like").post(async (req, res) => {
+    try {
+        const cat = await Cat.findOneAndUpdate(
+            {
+                cid: req.params.cid
+            },
+            {
+                $addToSet: { likedBy: req.body.uid }
+            },
+
+        );
+        res.status(responseCodes.ok).json(cat);
+    }
+    catch (err) {
+        res.json({ status: "error", error: err.message });
+    }
+});
+
+
+catRoutes.route("/api/cats/:cid/unlike").post(async (req, res) => {
+    try {
+        const cat = await Cat.findOneAndUpdate(
+            {
+                cid: req.params.cid
+            },
+            {
+                $pull: { likedBy: req.body.uid }
+            },
+
+        );
+        res.status(responseCodes.ok).json(cat);
+    }
+    catch (err) {
+        res.json({ status: "error", error: err.message });
+    }
+});
+
+
+catRoutes.route("/api/cats/:cid").delete(async (req, res) => {
     try {
         const cat = await Cat.deleteOne({
-            id: req.params.id,
+            id: req.params.cid,
         });
         res.status(responseCodes.ok).json(cat);
     }

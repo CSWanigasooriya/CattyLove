@@ -8,7 +8,7 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import Collapse from '@mui/material/Collapse';
-import { red } from '@mui/material/colors';
+import { red, blue, green } from '@mui/material/colors';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -35,7 +35,12 @@ const options = [
 
 export default function Feed(props) {
 
+    React.useEffect(() => {
+
+    }, []);
+
     const [expanded, setExpanded] = React.useState(false);
+    const [liked, setLike] = React.useState(false);
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
@@ -43,7 +48,10 @@ export default function Feed(props) {
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [selectedIndex, setSelectedIndex] = React.useState(1);
+
     const open = Boolean(anchorEl);
+
+
     const handleClickListItem = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -53,18 +61,63 @@ export default function Feed(props) {
         setAnchorEl(null);
     };
 
+    const handleLikeButtonClick = () => {
+        const uid = localStorage.getItem('token');
+        if (uid === null || uid == '') {
+            alert('Please login to like this cat');
+        } else if (props.data.likedBy.length > 0) {
+            Array.from(props.data.likedBy).map(user => {
+                if (user === uid) {
+                    setLike(false)
+                    dislikeCat()
+                    window.location.reload();
+                    return;
+                }
+            })
+        } else {
+            setLike(true)
+            likeCat();
+            window.location.reload();
+        }
+    };
+
     const handleClose = () => {
         setAnchorEl(null);
     };
 
-    const [values, setValues] = useState(props)
+    async function likeCat() {
+        const response = await fetch(`http://localhost:4000/api/cats/${props.data.cid}/like/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                uid: localStorage.getItem('token'),
+            }),
+        })
+        const data = await response.json();
+    }
+
+    async function dislikeCat() {
+        const response = await fetch(`http://localhost:4000/api/cats/${props.data.cid}/unlike/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                uid: localStorage.getItem('token'),
+            }),
+        })
+        const data = await response.json();
+    }
+
 
     return (
-        <Card sx={{ maxWidth: '100vw', m: 1, boxShadow: 2 }}>
+        <Card sx={{ maxWidth: '100vw', m: 1, boxShadow: 2, borderRadius: '0.5em' }}>
             <CardHeader
                 avatar={
                     <Avatar sx={{ bgcolor: red[500] }}>
-                        R
+                        <img src={props.data.photoURL} />
                     </Avatar>
                 }
                 action={
@@ -73,8 +126,8 @@ export default function Feed(props) {
                         <MoreVertIcon />
                     </IconButton>
                 }
-                title={values.name}
-                subheader="September 14, 2016"
+                title={props.data.displayName}
+                subheader={props.data.updatedAt}
             />
             <Menu
                 id="lock-menu"
@@ -98,14 +151,17 @@ export default function Feed(props) {
             </Menu>
             <CardContent>
                 <Typography variant="body2" color="text.secondary">
-                    {values.description}
+                    {props.data.description}
                 </Typography>
             </CardContent>
             <CardActions disableSpacing>
-                <IconButton>
-                    {/* <ThumbUp sx={{ color: blue[700] }} /> */}
-                    <ThumbUp />
-                </IconButton>
+                {/* <Button onClick={handleLikeButtonClick} sx={{ color: liked ? blue[500] : blue[200] }}> */}
+                <Button onClick={handleLikeButtonClick} sx={{ color: blue[500] }}>
+                    <ThumbUp sx={{ mr: 1 }} />
+                    <Typography>
+                        {props.data.likedBy.length} Likes
+                    </Typography>
+                </Button>
                 <ExpandMore
                     expand={expanded}
                     onClick={handleExpandClick}
@@ -123,12 +179,11 @@ export default function Feed(props) {
             </CardActions>
             <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <CardContent>
-                    <Typography paragraph>Method:</Typography>
                     <Typography paragraph>
                         Comments
                     </Typography>
                 </CardContent>
             </Collapse>
-        </Card>
+        </Card >
     )
 }
