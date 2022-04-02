@@ -34,13 +34,14 @@ function ResponsiveDrawer(props) {
 
     const navigate = useNavigate();
     const { window } = props;
-    const [auth, setAuth] = React.useState(true);
+    const [auth, setAuth] = React.useState(false);
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [cats, setCats] = React.useState([]);
 
     React.useEffect(() => {
         getData()
+        isAuthenticated() ? navigate('/home') : navigate('/')
     }, []);
 
     const handleChange = (event) => {
@@ -59,6 +60,17 @@ function ResponsiveDrawer(props) {
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
+
+
+    function isAuthenticated() {
+        const jwtToken = localStorage.getItem('token');
+        if (jwtToken === null || jwtToken === undefined) {
+            setAuth(false)
+            return false;
+        }
+        setAuth(true)
+        return true;
+    }
 
     async function getData() {
         const response = await fetch('http://localhost:4000/api/cats', {

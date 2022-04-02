@@ -1,5 +1,5 @@
-import './Layout.scss';
-import * as React from 'react';
+import './Layout.css';
+import React, { useEffect } from 'react';
 
 import {
     BrowserRouter
@@ -7,6 +7,7 @@ import {
 import routes from '../routes/routes';
 
 function Layout() {
+
     return (
         <BrowserRouter>
             {routes}
