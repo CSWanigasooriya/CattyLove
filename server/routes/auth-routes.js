@@ -1,14 +1,16 @@
+
+require("dotenv").config({ path: "./config.env" });
+
 const express = require("express");
 
-// recordRoutes is an instance of the express router.
-// We use it to define our routes.
-// The router will be added as a middleware and will take control of requests starting with path /record.
 const authRoutes = express.Router();
-require("dotenv").config({ path: "./config.env" });
+
 const jwt = require('jsonwebtoken');
 
 const responseCodes = require("../models/response-codes");
+
 const User = require("../models/user.model");
+
 
 authRoutes.route("/api/auth/register").post(async (req, res) => {
     try {
@@ -32,10 +34,11 @@ authRoutes.route("/api/auth/login").post(async (req, res) => {
         });
         if (user) {
             const token = jwt.sign({
+                uid: user._id,
                 email: req.body.email,
                 password: req.body.password,
             }, process.env.JWT_SECRET);
-            res.status(responseCodes.ok).json({ user, token });
+            res.status(responseCodes.ok).json({ uid: user._id, token });
         }
 
     }

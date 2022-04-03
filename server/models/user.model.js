@@ -6,7 +6,9 @@ const User = new mongoose.Schema({
     photoUrl: { type: String },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
+    wishlist: { type: Array, "default": [] },
 }, {
+    timestamps: true,
     collection: 'users'
 })
 

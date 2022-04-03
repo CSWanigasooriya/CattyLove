@@ -1,13 +1,16 @@
 const mongoose = require('mongoose');
 
+
 const Cat = new mongoose.Schema({
-    id: { type: String, required: true },
+    cid: { type: String, required: true },
     displayName: { type: String, required: true },
     gender: { type: String, required: true },
-    description: { type: String, required: true },
-    photoUrl: { type: String, required: true },
-    likes: { type: Number }
+    description: { type: String },
+    photoURL: { type: String },
+    likedBy: { type: Array, "default": [] },
+    comments: { type: Array, "default": [] }
 }, {
+    timestamps: true,
     collection: 'cats'
 })
 
