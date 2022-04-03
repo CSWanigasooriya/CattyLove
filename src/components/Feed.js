@@ -21,12 +21,15 @@ import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import React from 'react';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import {
+    useNavigate
+} from 'react-router-dom';
 //name, gender, description, no of likes the cat has, and a profile picture.
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
-    return <IconButton {...other} />;
+    return <ExpandMoreIcon {...other} />;
 })(({ theme, expand }) => ({
     transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
     marginLeft: 'auto',
@@ -45,6 +48,9 @@ export default function Feed(props) {
     React.useEffect(() => {
         getCatComments()
     }, []);
+
+    const navigate = useNavigate();
+
 
     const [values, setValues] = React.useState({
         comment: '',
@@ -120,6 +126,11 @@ export default function Feed(props) {
             })
         }
     };
+
+    const handleViewClick = () => {
+        navigate(`/cat/preview`)
+    }
+
 
     const handleClose = () => {
         setAnchorEl(null);
@@ -266,12 +277,17 @@ export default function Feed(props) {
                     onClick={handleExpandClick}>
                     <Comment sx={{ mr: 1 }} />
                     Comments
-                    <ExpandMore disableRipple
+                    <ExpandMore
                         expand={expanded}
                         onClick={handleExpandClick}
                     >
                         <ExpandMoreIcon sx={{ color: blue[700] }} />
                     </ExpandMore>
+                </Button>
+
+                <Button sx={{ ml: 'auto' }} onClick={handleViewClick}>
+                    <VisibilityIcon sx={{ mr: 1 }} />
+                    View
                 </Button>
 
             </CardActions>

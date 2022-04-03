@@ -22,7 +22,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import './Layout.css';
-
+import FactCheckIcon from '@mui/icons-material/FactCheck';
 
 const drawerWidth = 240;
 
@@ -141,7 +141,7 @@ function Layout(props) {
                                 aria-haspopup="true"
                                 color="inherit"
                             >
-                                <FilterList />
+                                <FactCheckIcon />
                             </IconButton>
 
                         </Tooltip>
@@ -168,7 +168,6 @@ function Layout(props) {
                                 horizontal: 'right',
                             }}
                             open={Boolean(anchorEl)}
-                            onClose={handleClose}
                         >
                             <MenuItem onClick={handleClose}>Sign Out</MenuItem>
                         </Menu>
