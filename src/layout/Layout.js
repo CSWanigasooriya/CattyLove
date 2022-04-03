@@ -47,7 +47,20 @@ function Layout(props) {
     };
 
     const handleWishlist = () => {
-        // navigate('/wishlist')
+        navigate('/user/wishlist')
+    }
+
+    function handleItemClick(event) {
+        // ⚠️ data and triggerEvent are not used. I've just added them so we have the full list of parameters
+
+        // I use the id attribute defined on the `Item` to identify which one is it
+        // this feel natural to my brain
+        switch (event.currentTarget.id) {
+            case "home":
+                // logic to remove the row
+                navigate('/user') // contain to item.id passed by `show`
+                break;
+        }
     }
 
     const handleClose = () => {
@@ -79,7 +92,7 @@ function Layout(props) {
             </Toolbar>
             <Divider />
             <List>
-                <ListItem button >
+                <ListItem button id="home" onClick={(event) => handleItemClick(event)}>
                     <ListItemIcon>
                         <Home />
                     </ListItemIcon>
