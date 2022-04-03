@@ -20,6 +20,8 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import React from 'react';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
 //name, gender, description, no of likes the cat has, and a profile picture.
 
 const ExpandMore = styled((props) => {
@@ -28,6 +30,7 @@ const ExpandMore = styled((props) => {
 })(({ theme, expand }) => ({
     transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
     marginLeft: 'auto',
+    height: 24,
     transition: theme.transitions.create('transform', {
         duration: theme.transitions.duration.shortest,
     }),
@@ -55,7 +58,9 @@ export default function Feed(props) {
             ...values,
             comments: values.comment
         });
-        setCatComment()
+        setCatComment().then(() => {
+            getCatComments()
+        })
     };
 
     const handleChange = (prop) => (event) => {
@@ -66,6 +71,9 @@ export default function Feed(props) {
         event.preventDefault();
     };
 
+
+
+    //Card Expansion
 
     const [expanded, setExpanded] = React.useState(false);
     const [liked, setLike] = React.useState(false);
@@ -80,6 +88,7 @@ export default function Feed(props) {
     const open = Boolean(anchorEl);
 
 
+    //Handle Menu Items
     const handleClickListItem = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -90,29 +99,25 @@ export default function Feed(props) {
         addToWishlist()
     };
 
+    //Handle Like Button Click
     const handleLikeButtonClick = () => {
         const uid = localStorage.getItem('uid');
 
         if (!isAuthenticated()) {
             alert('Please login to like this cat');
-        } else if (props.data.likedBy.length > 0) {
-            Array.from(props.data.likedBy).map(id => {
-                if (id === uid) {
-                    setLike(false)
-                    unlikeCat()
-                    window.location.reload();
-                    return;
-                } else {
-                    setLike(true)
-                    likeCat()
-                    window.location.reload();
-                    return;
-                }
+            return;
+        }
+
+        if (Array.from(props.data.likedBy).some(id => id === uid)) {
+            setLike(false)
+            unlikeCat().then(() => {
+                props.onLike(false)
             })
         } else {
             setLike(true)
-            likeCat();
-            window.location.reload();
+            likeCat().then(() => {
+                props.onLike(true)
+            })
         }
     };
 
@@ -202,7 +207,6 @@ export default function Feed(props) {
             },
         });
         const data = await response.json();
-        console.log(data);
         setComments(data)
     }
 
@@ -257,20 +261,19 @@ export default function Feed(props) {
                     <ThumbUp sx={{ mr: 1 }} />
                     {props.data.likedBy.length} {props.data.likedBy.length === 1 ? 'like' : 'likes'}
                 </Button>
-                <ExpandMore
-                    expand={expanded}
-                    onClick={handleExpandClick}
-                    aria-expanded={expanded}
-                    aria-label="show more"
-                >
-
-                </ExpandMore>
 
                 <Button
                     onClick={handleExpandClick}>
                     <Comment sx={{ mr: 1 }} />
                     Comments
+                    <ExpandMore disableRipple
+                        expand={expanded}
+                        onClick={handleExpandClick}
+                    >
+                        <ExpandMoreIcon sx={{ color: blue[700] }} />
+                    </ExpandMore>
                 </Button>
+
             </CardActions>
             <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <CardContent>
@@ -285,7 +288,7 @@ export default function Feed(props) {
                     ))}
 
                     <Grid component="form">
-                        <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
+                        <FormControl variant="outlined" fullWidth>
                             <InputLabel htmlFor="send-comment">Comment</InputLabel>
                             <OutlinedInput
                                 id="send-comment"

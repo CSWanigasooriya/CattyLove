@@ -10,6 +10,10 @@ function Home() {
         getData()
     }, []);
 
+    const handleLikeEvent = (event, index) => {
+        getData()
+    };
+
     async function getData() {
         const response = await fetch('http://localhost:4000/api/cats', {
             method: 'GET',
@@ -25,7 +29,7 @@ function Home() {
     return (
         <div>
             {Array.from(cats).map((cat, index) => (
-                <Feed data={cat} key={index} />
+                <Feed data={cat} key={index} onLike={handleLikeEvent} />
             ))}
         </div>
     );

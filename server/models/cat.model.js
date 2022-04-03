@@ -5,8 +5,8 @@ const Cat = new mongoose.Schema({
     cid: { type: String, required: true },
     displayName: { type: String, required: true },
     gender: { type: String, required: true },
-    description: { type: String, required: true },
-    photoURL: { type: String, required: true },
+    description: { type: String },
+    photoURL: { type: String },
     likedBy: { type: Array, "default": [] },
     comments: { type: Array, "default": [] }
 }, {
