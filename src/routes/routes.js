@@ -15,7 +15,7 @@ const routes = (
             <Route path="/user/wishlist" element={<Wishlist />} />
         </Route>
         <Route path="/cat" element={<Layout />} >
-            <Route path="/cat/preview/" element={<Preview />} />
+            <Route path="/cat/:cid/preview/" element={<Preview />} />
         </Route>
     </Routes>
 );
