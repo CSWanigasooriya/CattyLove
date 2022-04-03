@@ -23,9 +23,7 @@ const initialValues = {
     password: ''
 }
 
-
 function Auth() {
-
 
     const [values, setValues] = useState(initialValues)
 

@@ -83,9 +83,7 @@ function Layout(props) {
     const drawer = (
         <div>
             <Toolbar>
-                <Avatar sx={{ mr: 2 }}>
-                    C
-                </Avatar>
+                <Avatar alt="" src="https://source.unsplash.com/random" sx={{ mr: 2 }} />
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                     Catty Love
                 </Typography>
@@ -128,7 +126,7 @@ function Layout(props) {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-
+                        Dashboard
                     </Typography>
 
                     {/* {auth && ( */}

@@ -1,7 +1,8 @@
+import { Send } from '@mui/icons-material';
 import Comment from '@mui/icons-material/Comment';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ThumbUp from '@mui/icons-material/ThumbUp';
-import { Button } from '@mui/material';
+import { Button, Grid } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -9,9 +10,13 @@ import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import Collapse from '@mui/material/Collapse';
 import { blue, red } from '@mui/material/colors';
+import FormControl from '@mui/material/FormControl';
 import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import InputLabel from '@mui/material/InputLabel';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import OutlinedInput from '@mui/material/OutlinedInput';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import React from 'react';
@@ -35,8 +40,32 @@ const options = [
 export default function Feed(props) {
 
     React.useEffect(() => {
-
+        getCatComments()
     }, []);
+
+    const [values, setValues] = React.useState({
+        comment: '',
+    })
+
+    const [comments, setComments] = React.useState([]);
+
+
+    const handleClickSend = (event) => {
+        setValues({
+            ...values,
+            comments: values.comment
+        });
+        setCatComment()
+    };
+
+    const handleChange = (prop) => (event) => {
+        setValues({ ...values, [prop]: event.target.value });
+    };
+
+    const handleMouseDownPassword = (event) => {
+        event.preventDefault();
+    };
+
 
     const [expanded, setExpanded] = React.useState(false);
     const [liked, setLike] = React.useState(false);
@@ -132,8 +161,7 @@ export default function Feed(props) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                uid: localStorage.getItem('uid'),
-                cid: props.data.cid
+                wishlist: props.data
             }),
         })
     }
@@ -151,6 +179,32 @@ export default function Feed(props) {
     //         }),
     //     })
     // }
+
+    async function setCatComment() {
+        const response = await fetch(`http://localhost:4000/api/cats/${props.data.cid}/comments/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                uid: localStorage.getItem('uid'),
+                comment: values.comment
+            }),
+        })
+        console.log(response)
+    }
+
+    async function getCatComments() {
+        const response = await fetch(`http://localhost:4000/api/cats/${props.data.cid}/comments/`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        });
+        const data = await response.json();
+        console.log(data);
+        setComments(data)
+    }
 
 
     return (
@@ -191,12 +245,14 @@ export default function Feed(props) {
                 ))}
             </Menu>
             <CardContent>
-                <Typography variant="body2" color="text.secondary">
+                <Typography variant="body2" color="text.secondary" sx={{
+                    wordWrap: 'break-word',
+                }}>
                     {props.data.description}
                 </Typography>
             </CardContent>
             <CardActions disableSpacing>
-                <Button onClick={handleLikeButtonClick} sx={{ color: liked ? blue[500] : blue[200] }}>
+                <Button onClick={handleLikeButtonClick} sx={{ color: liked ? blue[700] : blue[700] }}>
                     {/* <Button onClick={handleLikeButtonClick} sx={{ color: blue[700] }}> */}
                     <ThumbUp sx={{ mr: 1 }} />
                     {props.data.likedBy.length} {props.data.likedBy.length === 1 ? 'like' : 'likes'}
@@ -219,8 +275,38 @@ export default function Feed(props) {
             <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <CardContent>
                     <Typography paragraph>
-                        Comments
+                        Comments:
                     </Typography>
+
+                    {Array.from(comments).map((comment, index) => (
+                        <Typography paragraph key={index}>
+                            {JSON.stringify(comment)}
+                        </Typography>
+                    ))}
+
+                    <Grid component="form">
+                        <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
+                            <InputLabel htmlFor="send-comment">Comment</InputLabel>
+                            <OutlinedInput
+                                id="send-comment"
+                                onChange={handleChange('comment')}
+                                value={values.comment}
+                                endAdornment={
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            onMouseDown={handleMouseDownPassword}
+                                            onClick={(event) => handleClickSend(event)}
+                                            edge="end"
+                                        >
+                                            <Send />
+                                        </IconButton>
+                                    </InputAdornment>
+                                }
+                                label="Comment"
+                            />
+                        </FormControl>
+                    </Grid>
+
                 </CardContent>
             </Collapse>
         </Card >

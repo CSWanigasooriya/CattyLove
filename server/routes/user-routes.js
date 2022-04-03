@@ -33,35 +33,49 @@ userRoutes.route("/api/users/:uid").get(async (req, res) => {
     }
 });
 
-userRoutes.route("/api/users/:uid/add").post(async (req, response) => {
+userRoutes.route("/api/users/:uid/add").post(async (req, res) => {
     try {
         const user = await User.findOneAndUpdate(
             {
                 _id: req.params.uid
             },
             {
-                $addToSet: { wishlist: req.body.cid }
+                $addToSet: { wishlist: req.body.wishlist }
             }
         );
-        response.status(responseCodes.ok).json(user);
+        res.status(responseCodes.ok).json(user);
     }
     catch (err) {
-        response.json({ status: "error", error: err.message });
+        res.json({ status: "error", error: err.message });
     }
 });
 
-userRoutes.route("/api/users/:uid/remove").post(async (req, response) => {
+userRoutes.route("/api/users/:uid/remove").post(async (req, res) => {
     try {
         const user = await User.findOneAndUpdate(
             {
                 _id: req.params.uid
             },
             {
-                $addToSet: { wishlist: req.body.cid }
+                $addToSet: { wishlist: req.body.wishlist }
             },
 
         );
         res.status(responseCodes.ok).json(user);
+    }
+    catch (err) {
+        res.json({ status: "error", error: err.message });
+    }
+});
+
+userRoutes.route("/api/users/:uid/wishlist").get(async (req, res) => {
+    try {
+        const user = await User.findOne(
+            {
+                _id: req.params.uid
+            }
+        );
+        res.status(responseCodes.ok).json(user.wishlist);
     }
     catch (err) {
         res.json({ status: "error", error: err.message });

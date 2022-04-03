@@ -100,5 +100,43 @@ catRoutes.route("/api/cats/:cid").delete(async (req, res) => {
     }
 });
 
+catRoutes.route("/api/cats/:cid/comments").get(async (req, res) => {
+    try {
+        const cat = await Cat.findOne(
+            {
+                cid: req.params.cid
+            },
+        );
+        res.status(responseCodes.ok).json(cat.comments);
+    }
+    catch (err) {
+        res.json({ status: "error", error: err.message });
+    }
+});
+
+
+catRoutes.route("/api/cats/:cid/comments").post(async (req, res) => {
+    try {
+        const cat = await Cat.findOneAndUpdate(
+            {
+                cid: req.params.cid
+            },
+            {
+                $addToSet: {
+                    comments: {
+                        uid: req.body.uid,
+                        comment: req.body.comment
+                    }
+                }
+            },
+
+        );
+        res.status(responseCodes.ok).json(cat);
+    }
+    catch (err) {
+        res.json({ status: "error", error: err.message });
+    }
+});
+
 
 module.exports = catRoutes;
