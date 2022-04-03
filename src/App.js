@@ -1,10 +1,15 @@
-import './App.css';
 import React from 'react';
-import Layout from './layout/Layout';
+import { BrowserRouter } from 'react-router-dom';
+import './App.css';
+import routes from './routes/routes';
 
 function App() {
   return (
-    <Layout />
+
+    <BrowserRouter>
+      {routes}
+    </BrowserRouter>
+
   );
 }
 

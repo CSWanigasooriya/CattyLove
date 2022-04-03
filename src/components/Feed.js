@@ -101,7 +101,7 @@ export default function Feed(props) {
 
     async function likeCat() {
 
-        const response = await fetch(`http://localhost:4000/api/cats/${props.data.cid}/like/`, {
+        await fetch(`http://localhost:4000/api/cats/${props.data.cid}/like/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -113,7 +113,7 @@ export default function Feed(props) {
     }
 
     async function unlikeCat() {
-        const response = await fetch(`http://localhost:4000/api/cats/${props.data.cid}/unlike/`, {
+        await fetch(`http://localhost:4000/api/cats/${props.data.cid}/unlike/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -126,8 +126,7 @@ export default function Feed(props) {
 
     async function addToWishlist() {
         const uid = localStorage.getItem('uid');
-
-        const response = await fetch(`http://localhost:4000/api/users/${uid}/add/`, {
+        await fetch(`http://localhost:4000/api/users/${uid}/add/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -139,20 +138,19 @@ export default function Feed(props) {
         })
     }
 
-    async function removeFromWishlist() {
-        const uid = localStorage.getItem('uid');
-
-        const response = await fetch(`http://localhost:4000/api/users/${uid}/remove/`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                uid: localStorage.getItem('uid'),
-                cid: props.data.cid
-            }),
-        })
-    }
+    // async function removeFromWishlist() {
+    //     const uid = localStorage.getItem('uid');
+    //     await fetch(`http://localhost:4000/api/users/${uid}/remove/`, {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         },
+    //         body: JSON.stringify({
+    //             uid: localStorage.getItem('uid'),
+    //             cid: props.data.cid
+    //         }),
+    //     })
+    // }
 
 
     return (
@@ -198,8 +196,8 @@ export default function Feed(props) {
                 </Typography>
             </CardContent>
             <CardActions disableSpacing>
-                {/* <Button onClick={handleLikeButtonClick} sx={{ color: liked ? blue[500] : blue[200] }}> */}
-                <Button onClick={handleLikeButtonClick} sx={{ color: blue[700] }}>
+                <Button onClick={handleLikeButtonClick} sx={{ color: liked ? blue[500] : blue[200] }}>
+                    {/* <Button onClick={handleLikeButtonClick} sx={{ color: blue[700] }}> */}
                     <ThumbUp sx={{ mr: 1 }} />
                     {props.data.likedBy.length} {props.data.likedBy.length === 1 ? 'like' : 'likes'}
                 </Button>

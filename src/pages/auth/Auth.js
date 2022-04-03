@@ -50,7 +50,7 @@ function Auth() {
         if (jsonData.uid) {
             localStorage.setItem('uid', jsonData.uid);
             localStorage.setItem('token', jsonData.token);
-            navigate('/home');
+            navigate('/user');
         }
     };
 
@@ -67,7 +67,7 @@ function Auth() {
                     <Grid item xs={6}>
                         <CardHeader
                             avatar={
-                                <img src={logoimage} />
+                                <img src={logoimage} alt="" />
                             }
                             title={
                                 <Typography variant="h5" sx={{ color: blue[700] }}>
@@ -137,7 +137,7 @@ function Auth() {
                         spacing={0}
                         alignItems="center"
                         justifyContent="center">
-                        <img src={loginimage} style={{ margin: 0 }} />
+                        <img src={loginimage} style={{ margin: 0 }} alt="" />
                     </Grid>
                 </Grid>
 
