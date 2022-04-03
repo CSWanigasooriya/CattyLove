@@ -7,6 +7,7 @@ const Cat = new mongoose.Schema({
     gender: { type: String, required: true },
     description: { type: String },
     photoURL: { type: String },
+    location: { type: String },
     likedBy: { type: Array, "default": [] },
     comments: { type: Array, "default": [] }
 }, {
