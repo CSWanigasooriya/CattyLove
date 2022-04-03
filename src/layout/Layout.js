@@ -20,7 +20,7 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import './Layout.css';
 
 
@@ -28,6 +28,9 @@ const drawerWidth = 240;
 
 
 function Layout(props) {
+
+    const navigate = useNavigate();
+
 
     const { window } = props;
     const [auth, setAuth] = React.useState(false);
@@ -60,7 +63,7 @@ function Layout(props) {
     function signOut() {
         localStorage.removeItem('uid');
         localStorage.removeItem('token');
-        // navigate('/');
+        navigate('/');
     }
 
 
@@ -115,51 +118,51 @@ function Layout(props) {
 
                     </Typography>
 
-                    {auth && (
-                        <div>
-                            <Tooltip title="Wishlist">
+                    {/* {auth && ( */}
+                    <div>
+                        <Tooltip title="Wishlist">
 
-                                <IconButton
-                                    onClick={handleWishlist}
-                                    size="large"
-                                    aria-label="account of current user"
-                                    aria-controls="menu-appbar"
-                                    aria-haspopup="true"
-                                    color="inherit"
-                                >
-                                    <FilterList />
-                                </IconButton>
-
-                            </Tooltip>
                             <IconButton
+                                onClick={handleWishlist}
                                 size="large"
                                 aria-label="account of current user"
                                 aria-controls="menu-appbar"
                                 aria-haspopup="true"
-                                onClick={handleMenu}
                                 color="inherit"
                             >
-                                <AccountCircle />
+                                <FilterList />
                             </IconButton>
-                            <Menu
-                                id="menu-appbar"
-                                anchorEl={anchorEl}
-                                anchorOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }}
-                                keepMounted
-                                transformOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }}
-                                open={Boolean(anchorEl)}
-                                onClose={handleClose}
-                            >
-                                <MenuItem onClick={handleClose}>Sign Out</MenuItem>
-                            </Menu>
-                        </div>
-                    )}
+
+                        </Tooltip>
+                        <IconButton
+                            size="large"
+                            aria-label="account of current user"
+                            aria-controls="menu-appbar"
+                            aria-haspopup="true"
+                            onClick={handleMenu}
+                            color="inherit"
+                        >
+                            <AccountCircle />
+                        </IconButton>
+                        <Menu
+                            id="menu-appbar"
+                            anchorEl={anchorEl}
+                            anchorOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            keepMounted
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            open={Boolean(anchorEl)}
+                            onClose={handleClose}
+                        >
+                            <MenuItem onClick={handleClose}>Sign Out</MenuItem>
+                        </Menu>
+                    </div>
+                    {/* )} */}
                 </Toolbar>
             </AppBar>
             <Box
