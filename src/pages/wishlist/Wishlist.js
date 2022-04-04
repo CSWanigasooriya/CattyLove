@@ -26,13 +26,12 @@ export default function Wishlist(props) {
 
     // async function removeFromWishlist() {
     //     const uid = localStorage.getItem('uid');
-    //     await fetch(`http://localhost:4000/api/users/${uid}/remove/`, {
+    //     await fetch(`http://localhost:4000/api/users/${uid}/wishlist/remove/`, {
     //         method: 'POST',
     //         headers: {
     //             'Content-Type': 'application/json'
     //         },
     //         body: JSON.stringify({
-    //             uid: localStorage.getItem('uid'),
     //             cid: props.data.cid
     //         }),
     //     })
@@ -41,9 +40,9 @@ export default function Wishlist(props) {
     return (
         <div>
             <h1>Wishlist</h1>
-            {Array.from(wishlist).map((item, index) => (
+            {Array.from(wishlist).map((cid, index) => (
                 <div key={index}>
-                    <h1>{JSON.stringify(item)}</h1>
+                    <h1>CID: {JSON.stringify(cid)}</h1>
                 </div>
             ))}
 

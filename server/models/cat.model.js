@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 
 const Cat = new mongoose.Schema({
     cid: { type: String, required: true },
-    displayName: { type: String, required: true },
+    displayName: { type: String },
     gender: { type: String, required: true },
     description: { type: String },
     photoURL: { type: String },
@@ -15,8 +15,14 @@ const Cat = new mongoose.Schema({
             lng: Number
         }
     },
-    likedBy: { type: Array, "default": [] },
-    comments: { type: Array, "default": [] }
+    likedBy: [{
+        type: {
+            uid: String,
+        }
+    }],
+    comments: [{
+        type: Object
+    }]
 }, {
     timestamps: true,
     collection: 'cats'
