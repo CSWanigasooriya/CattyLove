@@ -1,32 +1,12 @@
-import { Status, Wrapper } from "@googlemaps/react-wrapper";
+import { CircularProgress } from "@mui/material";
 import React, { useEffect, useRef, ReactElement } from "react";
 import { useParams } from 'react-router-dom';
-// name, age, gender, description, its features, contact number and an enlarged photo. 
+import GoogleMapReact from 'google-map-react';
+import PetsIcon from '@mui/icons-material/Pets';// name, age, gender, description, its features, contact number and an enlarged photo. 
 //The location of where the cat currently resides should be given using google maps API.
 
-const render = (status) => {
-    if (status === Status.LOADING) return <h3>{status} ..</h3>;
-    if (status === Status.FAILURE) return <h3>{status} ...</h3>;
-    return null;
-};
 
-function MapComponent({
-    center,
-    zoom,
-}) {
-
-    const ref = useRef();
-
-    useEffect(() => {
-        new window.google.maps.Map(ref.current, {
-            center,
-            zoom,
-        });
-    });
-
-    return <div ref={ref} id="map" />;
-}
-
+const Marker = ({ color }) => <div>{<PetsIcon color={color} />}</div>;
 
 export default function Preview() {
 
@@ -50,20 +30,24 @@ export default function Preview() {
         setCat(data)
     }
 
-    const center = { lat: -34.397, lng: 150.644 };
-    const zoom = 4;
+    if (!cat.cid) return (<CircularProgress />)
+
+    const center = { lat: 6.9366020011364125, lng: 79.84251072596648 };
+    const zoom = 11;
 
     return (
-        <div>
-            <h1>Preview</h1>
-            <p>
-                {JSON.stringify(cat)}
-            </p>
-            <p>{cat.displayName}</p>
-
-            <Wrapper apiKey="AIzaSyAKDfv_S_DT0Dbe8bTIqdJhINlYyFf9vWo" render={render}>
-                <MapComponent center={center} zoom={zoom} />
-            </Wrapper>
+        <div style={{ height: '100vh', width: '100%' }}>
+            <GoogleMapReact
+                bootstrapURLKeys={{ key: "AIzaSyBt2tNTwamNhSga0Mj97Fuuy_5mCvfWpcM" }}
+                defaultCenter={center}
+                defaultZoom={zoom}
+            >
+                <Marker
+                    lat={cat.location.lat}
+                    lng={cat.location.lng}
+                    color="secondary"
+                />
+            </GoogleMapReact>
         </div>
     )
 }
