@@ -203,19 +203,6 @@ export default function Feed(props) {
         })
     }
 
-    // async function removeFromWishlist() {
-    //     const uid = localStorage.getItem('uid');
-    //     await fetch(`http://localhost:4000/api/users/${uid}/remove/`, {
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         },
-    //         body: JSON.stringify({
-    //             uid: localStorage.getItem('uid'),
-    //             cid: props.data.cid
-    //         }),
-    //     })
-    // }
 
     async function setCatComment() {
         const response = await fetch(`http://localhost:4000/api/cats/${props.data.cid}/comments/`, {

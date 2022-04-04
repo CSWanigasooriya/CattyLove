@@ -1,6 +1,7 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
 
-export default function Wishlist() {
+export default function Wishlist(props) {
 
     const [wishlist, setWishlist] = React.useState([]);
 
@@ -23,6 +24,19 @@ export default function Wishlist() {
         setWishlist([...data])
     }
 
+    // async function removeFromWishlist() {
+    //     const uid = localStorage.getItem('uid');
+    //     await fetch(`http://localhost:4000/api/users/${uid}/remove/`, {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         },
+    //         body: JSON.stringify({
+    //             uid: localStorage.getItem('uid'),
+    //             cid: props.data.cid
+    //         }),
+    //     })
+    // }
 
     return (
         <div>
