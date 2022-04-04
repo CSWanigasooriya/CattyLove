@@ -6,6 +6,8 @@ const catRoutes = express.Router();
 
 const Cat = require("../models/cat.model");
 
+const mongoose = require('mongoose');
+
 const responseCodes = require("../models/response-codes");
 
 catRoutes.route("/api/cats").get(async (req, res) => {
@@ -124,6 +126,31 @@ catRoutes.route("/api/cats/:cid/comments").post(async (req, res) => {
             {
                 $addToSet: {
                     comments: {
+                        commentId: mongoose.Types.ObjectId(),
+                        uid: req.body.uid,
+                        comment: req.body.comment
+                    }
+                }
+            },
+
+        );
+        res.status(responseCodes.ok).json(cat);
+    }
+    catch (err) {
+        res.json({ status: "error", error: err.message });
+    }
+});
+
+catRoutes.route("/api/cats/:cid/comments/:commentId").delete(async (req, res) => {
+    try {
+        const cat = await Cat.findOneAndUpdate(
+            {
+                cid: req.params.cid
+            },
+            {
+                $pull: {
+                    comments: {
+                        commentId: req.params.commentId,
                         uid: req.body.uid,
                         comment: req.body.comment
                     }

@@ -33,14 +33,14 @@ userRoutes.route("/api/users/:uid").get(async (req, res) => {
     }
 });
 
-userRoutes.route("/api/users/:uid/add").post(async (req, res) => {
+userRoutes.route("/api/users/:uid/wishlist/add").post(async (req, res) => {
     try {
         const user = await User.findOneAndUpdate(
             {
                 _id: req.params.uid
             },
             {
-                $addToSet: { wishlist: req.body.wishlist }
+                $addToSet: { wishlist: req.body.cid }
             }
         );
         res.status(responseCodes.ok).json(user);
@@ -50,14 +50,14 @@ userRoutes.route("/api/users/:uid/add").post(async (req, res) => {
     }
 });
 
-userRoutes.route("/api/users/:uid/remove").post(async (req, res) => {
+userRoutes.route("/api/users/:uid/wishlist/remove").post(async (req, res) => {
     try {
         const user = await User.findOneAndUpdate(
             {
                 _id: req.params.uid
             },
             {
-                $addToSet: { wishlist: req.body.wishlist }
+                $pull: { wishlist: req.body.cid }
             },
 
         );

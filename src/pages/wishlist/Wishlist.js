@@ -5,12 +5,19 @@ export default function Wishlist(props) {
 
     const [wishlist, setWishlist] = React.useState([]);
 
+    const [cats, setCats] = React.useState([]);
+
+
     React.useEffect(() => {
-        getWishlistedCats()
+        getWishlistedCatIds().then(async ids => {
+            ids.map(async cid => {
+                await getCatDetails(cid)
+            })
+        });
     }, []);
 
 
-    async function getWishlistedCats() {
+    async function getWishlistedCatIds() {
         const uid = localStorage.getItem('uid');
 
         const response = await fetch(`http://localhost:4000/api/users/${uid}/wishlist`, {
@@ -20,19 +27,32 @@ export default function Wishlist(props) {
             },
         })
         const data = await response.json();
-        console.log(data)
+
         setWishlist([...data])
+
+        return data;
+    }
+
+    async function getCatDetails(cid) {
+        const response = await fetch(`http://localhost:4000/api/cats/${cid}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+        const data = await response.json();
+
+        setCats([...cats, data])
     }
 
     // async function removeFromWishlist() {
     //     const uid = localStorage.getItem('uid');
-    //     await fetch(`http://localhost:4000/api/users/${uid}/remove/`, {
+    //     await fetch(`http://localhost:4000/api/users/${uid}/wishlist/remove/`, {
     //         method: 'POST',
     //         headers: {
     //             'Content-Type': 'application/json'
     //         },
     //         body: JSON.stringify({
-    //             uid: localStorage.getItem('uid'),
     //             cid: props.data.cid
     //         }),
     //     })
@@ -41,9 +61,16 @@ export default function Wishlist(props) {
     return (
         <div>
             <h1>Wishlist</h1>
-            {Array.from(wishlist).map((item, index) => (
+            {Array.from(wishlist).map((cid, index) => (
                 <div key={index}>
-                    <h1>{JSON.stringify(item)}</h1>
+                    <h1>CID: {JSON.stringify(cid)}</h1>
+                </div>
+            ))}
+
+
+            {Array.from(cats).map((cat, index) => (
+                <div key={index}>
+                    <h1>CAT: {JSON.stringify(cat)}</h1>
                 </div>
             ))}
 
