@@ -47,14 +47,11 @@ export default function Wishlist(props) {
 
     // async function removeFromWishlist() {
     //     const uid = localStorage.getItem('uid');
-    //     await fetch(`http://localhost:4000/api/users/${uid}/wishlist/remove/`, {
-    //         method: 'POST',
+    //     await fetch(`http://localhost:4000/api/users/${uid}/wishlist/${cid}`, {
+    //         method: 'DELETE',
     //         headers: {
     //             'Content-Type': 'application/json'
-    //         },
-    //         body: JSON.stringify({
-    //             cid: props.data.cid
-    //         }),
+    //         }
     //     })
     // }
 
