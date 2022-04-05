@@ -23,7 +23,8 @@ import React from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import './Layout.css';
 import FactCheckIcon from '@mui/icons-material/FactCheck';
-
+import Create from '../components/Create';
+import Button from '@mui/material/Button';
 
 
 const drawerWidth = 240;
@@ -37,6 +38,7 @@ function Layout(props) {
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
 
+    const [openCreate, setOpenCreate] = React.useState(false);
 
     // const handleChange = (event) => {
     //     setAuth(event.target.checked);
@@ -70,6 +72,14 @@ function Layout(props) {
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
+    };
+
+    const handleClickOpenDialog = () => {
+        setOpenCreate(true);
+    };
+
+    const handleCloseDialog = () => {
+        setOpenCreate(false);
     };
 
 
@@ -214,11 +224,16 @@ function Layout(props) {
             >
                 <Toolbar />
 
+                <Button variant="outlined" onClick={handleClickOpenDialog}>
+                    Create Cat
+                </Button>
+
                 <Outlet />
 
             </Box>
 
 
+            <Create open={openCreate} handleClose={handleCloseDialog} />
         </Box >
     )
 }
