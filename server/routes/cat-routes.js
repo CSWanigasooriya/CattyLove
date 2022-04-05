@@ -42,6 +42,12 @@ catRoutes.route("/api/cats").post(async (req, res) => {
             displayName: req.body.displayName,
             gender: req.body.gender,
             description: req.body.description,
+            location: {
+                address: req.body.address,
+                city: req.body.city,
+                lat: req.body.lat,
+                lng: req.body.lng
+            },
             photoUrl: req.body.photoUrl,
         });
         res.status(responseCodes.ok).json(cat);

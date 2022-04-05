@@ -1,10 +1,12 @@
 import React from 'react';
 import Feed from '../../components/Feed';
 import './Home.css';
-
+import Create from '../../components/Create';
+import Button from '@mui/material/Button';
 
 function Home() {
     const [cats, setCats] = React.useState([]);
+    const [openCreate, setOpenCreate] = React.useState(false);
 
     React.useEffect(() => {
         getData()
@@ -12,6 +14,16 @@ function Home() {
 
     const handleLikeEvent = (event, index) => {
         getData()
+    };
+
+    const handleClickOpenDialog = () => {
+        setOpenCreate(true);
+    };
+
+    const handleCloseDialog = () => {
+        setOpenCreate(false);
+        getData()
+
     };
 
     async function getData() {
@@ -28,9 +40,16 @@ function Home() {
 
     return (
         <div>
+            <Button variant="outlined" onClick={handleClickOpenDialog} sx={{ m: 1 }}>
+                Create New Cat
+            </Button>
+
             {Array.from(cats).map((cat, index) => (
                 <Feed data={cat} key={index} onLike={handleLikeEvent} />
             ))}
+
+            <Create open={openCreate} handleClose={handleCloseDialog} />
+
         </div>
     );
 }

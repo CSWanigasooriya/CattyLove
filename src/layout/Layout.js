@@ -24,10 +24,9 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import './Layout.css';
 import FactCheckIcon from '@mui/icons-material/FactCheck';
 
+
+
 const drawerWidth = 240;
-
-
-
 
 function Layout(props) {
 
@@ -72,6 +71,7 @@ function Layout(props) {
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
+
 
 
     function signOut() {
@@ -217,6 +217,8 @@ function Layout(props) {
                 <Outlet />
 
             </Box>
+
+
         </Box >
     )
 }

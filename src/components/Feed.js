@@ -28,6 +28,7 @@ import React from 'react';
 import {
     useNavigate
 } from 'react-router-dom';
+
 //name, gender, description, no of likes the cat has, and a profile picture.
 
 const ExpandMore = styled((props) => {
@@ -262,7 +263,7 @@ export default function Feed(props) {
                 <CardHeader
                     avatar={
                         <Avatar sx={{ bgcolor: red[500] }}>
-                            <img src={props.data.photoURL} />
+                            {props.data.photoURL ? <img src={props.data.photoURL} /> : props.data.displayName.charAt(0)}
                         </Avatar>
                     }
                     action={

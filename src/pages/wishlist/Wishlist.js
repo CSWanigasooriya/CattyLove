@@ -9,9 +9,9 @@ export default function Wishlist(props) {
 
 
     React.useEffect(() => {
-        getWishlistedCatIds().then(async ids => {
-            ids.map(async cid => {
-                await getCatDetails(cid)
+        getWishlistedCatIds().then(ids => {
+            ids.map(cid => {
+                getCatDetails(cid)
             })
         });
     }, []);
