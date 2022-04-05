@@ -5,7 +5,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ThumbUp from '@mui/icons-material/ThumbUp';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import { Button, Grid, List, ListItem, ListItemSecondaryAction, ListItemText, TextField } from '@mui/material';
+import { Button, Grid, List, ListItem, ListItemSecondaryAction, ListItemText } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -263,7 +263,7 @@ export default function Feed(props) {
                 <CardHeader
                     avatar={
                         <Avatar sx={{ bgcolor: red[500] }}>
-                            {props.data.photoURL ? <img src={props.data.photoURL} /> : props.data.displayName.charAt(0)}
+                            {props.data.photoURL ? <img src={props.data.photoURL} alt="" /> : props.data.displayName.charAt(0)}
                         </Avatar>
                     }
                     action={

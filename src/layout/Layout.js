@@ -1,6 +1,6 @@
 import { Home } from '@mui/icons-material';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import FilterList from '@mui/icons-material/FilterList';
+import FactCheckIcon from '@mui/icons-material/FactCheck';
 import MenuIcon from '@mui/icons-material/Menu';
 import AppBar from '@mui/material/AppBar';
 import Avatar from '@mui/material/Avatar';
@@ -22,9 +22,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import './Layout.css';
-import FactCheckIcon from '@mui/icons-material/FactCheck';
-import Create from '../components/Create';
-import Button from '@mui/material/Button';
 
 
 const drawerWidth = 240;
@@ -34,11 +31,8 @@ function Layout(props) {
     const navigate = useNavigate();
 
     const { window } = props;
-    const [auth, setAuth] = React.useState(false);
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
-
-    const [openCreate, setOpenCreate] = React.useState(false);
 
     // const handleChange = (event) => {
     //     setAuth(event.target.checked);
@@ -62,7 +56,10 @@ function Layout(props) {
                 // logic to remove the row
                 navigate('/user') // contain to item.id passed by `show`
                 break;
+            default:
+                break;
         }
+
     }
 
     const handleClose = () => {
@@ -73,15 +70,6 @@ function Layout(props) {
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
-
-    const handleClickOpenDialog = () => {
-        setOpenCreate(true);
-    };
-
-    const handleCloseDialog = () => {
-        setOpenCreate(false);
-    };
-
 
 
     function signOut() {
@@ -224,16 +212,10 @@ function Layout(props) {
             >
                 <Toolbar />
 
-                <Button variant="outlined" onClick={handleClickOpenDialog}>
-                    Create Cat
-                </Button>
-
                 <Outlet />
 
             </Box>
 
-
-            <Create open={openCreate} handleClose={handleCloseDialog} />
         </Box >
     )
 }

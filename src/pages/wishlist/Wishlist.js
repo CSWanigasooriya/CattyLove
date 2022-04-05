@@ -1,5 +1,4 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
 
 export default function Wishlist(props) {
 
@@ -11,7 +10,7 @@ export default function Wishlist(props) {
     React.useEffect(() => {
         getWishlistedCatIds().then(ids => {
             ids.map(cid => {
-                getCatDetails(cid)
+                return getCatDetails(cid)
             })
         });
     }, []);
