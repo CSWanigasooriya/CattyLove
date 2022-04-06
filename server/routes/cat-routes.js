@@ -155,14 +155,9 @@ catRoutes.route("/api/cats/:cid/comments/:commentId").delete(async (req, res) =>
             },
             {
                 $pull: {
-                    comments: {
-                        commentId: req.params.commentId,
-                        uid: req.body.uid,
-                        comment: req.body.comment
-                    }
+                    comments: { commentId: mongoose.Types.ObjectId(req.params.commentId) }
                 }
             },
-
         );
         res.status(responseCodes.ok).json(cat);
     }

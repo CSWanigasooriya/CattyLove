@@ -1,5 +1,13 @@
 const mongoose = require('mongoose');
 
+const Comment = new mongoose.Schema({
+    uid: { type: String, required: true },
+    comment: { type: String },
+    commentId: { type: mongoose.ObjectId, required: true }
+}, {
+    timestamps: true,
+});
+
 
 const Cat = new mongoose.Schema({
     cid: { type: String, required: true },
@@ -15,13 +23,9 @@ const Cat = new mongoose.Schema({
             lng: Number
         }
     },
-    likedBy: [{
-        type: {
-            uid: String,
-        }
-    }],
+    likedBy: [{ type: String }],
     comments: [{
-        type: Object
+        type: Comment
     }]
 }, {
     timestamps: true,

@@ -1,27 +1,14 @@
+import CloseIcon from '@mui/icons-material/Close';
+import { Grid, Snackbar } from '@mui/material';
+import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
-import ListItemText from '@mui/material/ListItemText';
-import ListItem from '@mui/material/ListItem';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import CloseIcon from '@mui/icons-material/Close';
 import Slide from '@mui/material/Slide';
-import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import { Card, CardHeader, Grid, ListItemSecondaryAction, Snackbar } from '@mui/material';
-import Checkbox from '@mui/material/Checkbox';
-import { blue, grey, red } from '@mui/material/colors';
-import FormControlLabel from '@mui/material/FormControlLabel';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
 import React, { useState } from 'react';
-import {
-    useNavigate
-} from 'react-router-dom';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -85,7 +72,6 @@ export default function Create(props) {
     return (
         <div>
             <Dialog
-                fullScreen
                 open={props.open}
                 onClose={props.handleClose}
                 TransitionComponent={Transition}

@@ -1,11 +1,11 @@
-import { Send } from '@mui/icons-material';
-import CloseIcon from '@mui/icons-material/Close';
+
+import { Delete, Send } from '@mui/icons-material';
 import Comment from '@mui/icons-material/Comment';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ThumbUp from '@mui/icons-material/ThumbUp';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import { Button, Grid } from '@mui/material';
+import { Button, Grid, List, ListItem, ListItemSecondaryAction, ListItemText } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -50,6 +50,7 @@ const options = [
 ];
 
 export default function Feed(props) {
+    const uid = localStorage.getItem('uid');
 
     React.useEffect(() => {
         getCatComments()
@@ -128,7 +129,6 @@ export default function Feed(props) {
 
     //Handle Like Button Click
     const handleLikeButtonClick = () => {
-        const uid = localStorage.getItem('uid');
 
         if (!isAuthenticated()) {
             alert('Please login to like this cat');
@@ -152,6 +152,11 @@ export default function Feed(props) {
         navigate(`/cat/${props.data.cid}/preview`)
     }
 
+    const handleDeleteComment = (commentId) => {
+        deleteComment(commentId).then(() => {
+            getCatComments()
+        })
+    }
 
     const handleClose = () => {
         setAnchorEl(null);
@@ -167,8 +172,7 @@ export default function Feed(props) {
     }
 
     async function likeCat() {
-
-        await fetch(`http://localhost:4000/api/cats/${props.data.cid}/like/`, {
+        const response = await fetch(`http://localhost:4000/api/cats/${props.data.cid}/like/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -177,10 +181,12 @@ export default function Feed(props) {
                 uid: localStorage.getItem('uid'),
             }),
         })
+        const data = await response.json();
+        return data;
     }
 
     async function unlikeCat() {
-        await fetch(`http://localhost:4000/api/cats/${props.data.cid}/unlike/`, {
+        const response = await fetch(`http://localhost:4000/api/cats/${props.data.cid}/unlike/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -189,11 +195,14 @@ export default function Feed(props) {
                 uid: localStorage.getItem('uid')
             }),
         })
+
+        const data = await response.json();
+        return data;
     }
 
     async function addToWishlist() {
         const uid = localStorage.getItem('uid');
-        await fetch(`http://localhost:4000/api/users/${uid}/wishlist/add/`, {
+        const response = await fetch(`http://localhost:4000/api/users/${uid}/wishlist/add/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -202,6 +211,9 @@ export default function Feed(props) {
                 cid: props.data.cid
             }),
         })
+
+        const data = await response.json();
+        return data;
     }
 
 
@@ -216,7 +228,9 @@ export default function Feed(props) {
                 comment: values.comment
             }),
         })
-        console.log(response)
+
+        const data = await response.json();
+        return data;
     }
 
     async function getCatComments() {
@@ -230,6 +244,17 @@ export default function Feed(props) {
         setComments(data)
     }
 
+    async function deleteComment(commentId) {
+        const response = await fetch(`http://localhost:4000/api/cats/${props.data.cid}/comments/${commentId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        const data = await response.json();
+        return data;
+    }
+
 
     return (
         <div>
@@ -238,7 +263,7 @@ export default function Feed(props) {
                 <CardHeader
                     avatar={
                         <Avatar sx={{ bgcolor: red[500] }}>
-                            {props.data.photoURL ? <img src={props.data.photoURL} /> : props.data.displayName.charAt(0)}
+                            {props.data.photoURL ? <img src={props.data.photoURL} alt="" /> : props.data.displayName.charAt(0)}
                         </Avatar>
                     }
                     action={
@@ -305,17 +330,33 @@ export default function Feed(props) {
                 <Divider />
                 <Collapse in={expanded} timeout="auto" unmountOnExit>
                     <CardContent>
-                        <Typography paragraph>
-                            Comments:
-                        </Typography>
 
-                        {Array.from(comments).map((comment, index) => (
-                            <Typography paragraph key={index}>
-                                {JSON.stringify(comment)}
+                        {(comments.length > 0) ?
+                            <List>
+                                {Array.from(comments).map((data, index) => (
+                                    <ListItem key={index}>
+                                        <Grid container>
+                                            <Grid item xs={12}>
+                                                <ListItemText primary={data.comment}></ListItemText>
+                                                <ListItemSecondaryAction sx={{ display: uid === data.uid ? "block" : "none" }}>
+                                                    <IconButton onClick={() => handleDeleteComment(data.commentId)}><Delete sx={{ color: red[500] }} /></IconButton>
+                                                </ListItemSecondaryAction>
+                                            </Grid>
+                                            <Grid item xs={12}>
+                                                <ListItemText secondary={data.updatedAt}></ListItemText>
+                                            </Grid>
+                                        </Grid>
+                                    </ListItem>
+                                ))}
+
+                            </List>
+                            :
+                            <Typography paragraph sx={{ m: 1 }}>
+                                No comments yet.
                             </Typography>
-                        ))}
+                        }
 
-                        <Grid component="form">
+                        <Grid component="form" onSubmit={e => { e.preventDefault(); }} sx={{ mt: 3 }}>
                             <FormControl variant="outlined" fullWidth>
                                 <InputLabel htmlFor="send-comment">Comment</InputLabel>
                                 <OutlinedInput
@@ -325,6 +366,7 @@ export default function Feed(props) {
                                     endAdornment={
                                         <InputAdornment position="end">
                                             <IconButton
+                                                type='button'
                                                 onMouseDown={handleMouseDownPassword}
                                                 onClick={(event) => handleClickSend(event)}
                                                 edge="end"

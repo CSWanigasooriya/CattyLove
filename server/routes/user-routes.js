@@ -33,7 +33,22 @@ userRoutes.route("/api/users/:uid").get(async (req, res) => {
     }
 });
 
-userRoutes.route("/api/users/:uid/wishlist/add").post(async (req, res) => {
+
+userRoutes.route("/api/users/:uid/wishlist").get(async (req, res) => {
+    try {
+        const user = await User.findOne(
+            {
+                _id: req.params.uid
+            }
+        );
+        res.status(responseCodes.ok).json(user.wishlist);
+    }
+    catch (err) {
+        res.json({ status: "error", error: err.message });
+    }
+});
+
+userRoutes.route("/api/users/:uid/wishlist").post(async (req, res) => {
     try {
         const user = await User.findOneAndUpdate(
             {
@@ -50,14 +65,14 @@ userRoutes.route("/api/users/:uid/wishlist/add").post(async (req, res) => {
     }
 });
 
-userRoutes.route("/api/users/:uid/wishlist/remove").post(async (req, res) => {
+userRoutes.route("/api/users/:uid/wishlist/:cid").delete(async (req, res) => {
     try {
         const user = await User.findOneAndUpdate(
             {
                 _id: req.params.uid
             },
             {
-                $pull: { wishlist: req.body.cid }
+                $pull: { wishlist: req.params.cid }
             },
 
         );
@@ -68,18 +83,5 @@ userRoutes.route("/api/users/:uid/wishlist/remove").post(async (req, res) => {
     }
 });
 
-userRoutes.route("/api/users/:uid/wishlist").get(async (req, res) => {
-    try {
-        const user = await User.findOne(
-            {
-                _id: req.params.uid
-            }
-        );
-        res.status(responseCodes.ok).json(user.wishlist);
-    }
-    catch (err) {
-        res.json({ status: "error", error: err.message });
-    }
-});
 
 module.exports = userRoutes;

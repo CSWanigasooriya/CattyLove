@@ -1,5 +1,4 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
 
 export default function Wishlist(props) {
 
@@ -11,7 +10,7 @@ export default function Wishlist(props) {
     React.useEffect(() => {
         getWishlistedCatIds().then(ids => {
             ids.map(cid => {
-                getCatDetails(cid)
+                return getCatDetails(cid)
             })
         });
     }, []);
@@ -47,14 +46,11 @@ export default function Wishlist(props) {
 
     // async function removeFromWishlist() {
     //     const uid = localStorage.getItem('uid');
-    //     await fetch(`http://localhost:4000/api/users/${uid}/wishlist/remove/`, {
-    //         method: 'POST',
+    //     await fetch(`http://localhost:4000/api/users/${uid}/wishlist/${cid}`, {
+    //         method: 'DELETE',
     //         headers: {
     //             'Content-Type': 'application/json'
-    //         },
-    //         body: JSON.stringify({
-    //             cid: props.data.cid
-    //         }),
+    //         }
     //     })
     // }
 
