@@ -24,6 +24,7 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import './Layout.css';
 
 
+
 const drawerWidth = 240;
 
 function Layout(props) {
@@ -33,6 +34,7 @@ function Layout(props) {
     const { window } = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
+
 
     // const handleChange = (event) => {
     //     setAuth(event.target.checked);
@@ -70,7 +72,6 @@ function Layout(props) {
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
-
 
     function signOut() {
         localStorage.removeItem('uid');
