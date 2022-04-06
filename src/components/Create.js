@@ -9,6 +9,11 @@ import TextField from '@mui/material/TextField';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import React, { useState } from 'react';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -34,7 +39,7 @@ export default function Create(props) {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         setCatData(data).then((data) => {
-            if (data.status === 200)
+            if (data)
                 setOpenSnack(true);
         });
     }
@@ -56,10 +61,7 @@ export default function Create(props) {
                 gender: data.get('gender'),
                 description: data.get('catDescription'),
                 photoUrl: data.get('catImage'),
-                location: {
-                    lng: data.get('longitude'),
-                    lat: data.get('latitude')
-                }
+                likedBy: []
             }),
         })
 
@@ -118,16 +120,19 @@ export default function Create(props) {
                             value={values.catName}
                             onChange={(event) => setValues({ ...values, catName: event.target.value })}
                         />
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            type="text"
-                            name="gender"
-                            label="Gender"
-                            value={values.gender}
-                            onChange={(event) => setValues({ ...values, gender: event.target.value })}
-                        />
+                        <FormControl>
+                            <FormLabel id="demo-row-radio-buttons-group-label">Gender</FormLabel>
+                            <RadioGroup
+                                row
+                                value={values.gender}
+                                onChange={(event) => setValues({ ...values, gender: event.target.value })}
+                                name="row-radio-buttons-group"
+                            >
+                                <FormControlLabel value="female" control={<Radio />} label="Female" />
+                                <FormControlLabel value="male" control={<Radio />} label="Male" />
+                            </RadioGroup>
+                        </FormControl>
+
                         <TextField
                             margin="normal"
                             required

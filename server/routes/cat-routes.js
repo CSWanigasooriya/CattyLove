@@ -10,6 +10,7 @@ const mongoose = require('mongoose');
 
 const responseCodes = require("../models/response-codes");
 
+// Get all cats
 catRoutes.route("/api/cats").get(async (req, res) => {
     try {
         const cat = await Cat.find();
@@ -20,13 +21,10 @@ catRoutes.route("/api/cats").get(async (req, res) => {
     }
 });
 
-catRoutes.route("/api/cats/:cid").get(async (req, res) => {
+// Get a cat by id
+catRoutes.route("/api/cats/:id").get(async (req, res) => {
     try {
-        const cat = await Cat.findOne(
-            {
-                cid: req.params.cid
-            }
-        );
+        const cat = await Cat.findById(req.params.id);
         res.status(responseCodes.ok).json(cat);
     }
     catch (err) {
@@ -34,23 +32,12 @@ catRoutes.route("/api/cats/:cid").get(async (req, res) => {
     }
 });
 
-
+// Create a cat
 catRoutes.route("/api/cats").post(async (req, res) => {
+    const cat = new Cat(req.body);
     try {
-        const cat = await Cat.create({
-            cid: req.body.cid,
-            displayName: req.body.displayName,
-            gender: req.body.gender,
-            description: req.body.description,
-            location: {
-                address: req.body.address,
-                city: req.body.city,
-                lat: req.body.lat,
-                lng: req.body.lng
-            },
-            photoUrl: req.body.photoUrl,
-        });
-        res.status(responseCodes.ok).json(cat);
+        const savedCat = await cat.save();
+        res.status(responseCodes.ok).json(savedCat);
     }
     catch (err) {
         res.json({ status: "error", error: err.message });
@@ -58,18 +45,19 @@ catRoutes.route("/api/cats").post(async (req, res) => {
 });
 
 
-catRoutes.route("/api/cats/:cid/like").post(async (req, res) => {
-    try {
-        const cat = await Cat.findOneAndUpdate(
-            {
-                cid: req.params.cid
-            },
-            {
-                $addToSet: { likedBy: req.body.uid }
-            },
 
-        );
-        res.status(responseCodes.ok).json(cat);
+// Like a cat
+catRoutes.route("/api/cats/:id/like").put(async (req, res) => {
+
+    try {
+        const cat = await Cat.findById(req.params.id);
+        if (!cat.likedBy.includes(req.body.uid)) {
+            const updatedCat = await cat.updateOne({ $push: { likedBy: req.body.uid } })
+            res.status(responseCodes.ok).json(updatedCat);
+        } else {
+            const updatedCat = await cat.updateOne({ $pull: { likedBy: req.body.uid } })
+            res.status(responseCodes.ok).json(updatedCat);
+        }
     }
     catch (err) {
         res.json({ status: "error", error: err.message });
@@ -77,44 +65,22 @@ catRoutes.route("/api/cats/:cid/like").post(async (req, res) => {
 });
 
 
-catRoutes.route("/api/cats/:cid/unlike").post(async (req, res) => {
+catRoutes.route("/api/cats/:id").delete(async (req, res) => {
     try {
-        const cat = await Cat.findOneAndUpdate(
-            {
-                cid: req.params.cid
-            },
-            {
-                $pull: { likedBy: req.body.uid }
-            },
-
-        );
-        res.status(responseCodes.ok).json(cat);
+        const cat = await Cat.findById(req.params.id)
+        if (cat.cid === req.body.cid) {
+            const deletedCat = await cat.deleteOne();
+            res.status(responseCodes.ok).json(deletedCat);
+        }
     }
     catch (err) {
         res.json({ status: "error", error: err.message });
     }
 });
 
-
-catRoutes.route("/api/cats/:cid").delete(async (req, res) => {
+catRoutes.route("/api/cats/:id/comments").get(async (req, res) => {
     try {
-        const cat = await Cat.deleteOne({
-            id: req.params.cid,
-        });
-        res.status(responseCodes.ok).json(cat);
-    }
-    catch (err) {
-        res.json({ status: "error", error: err.message });
-    }
-});
-
-catRoutes.route("/api/cats/:cid/comments").get(async (req, res) => {
-    try {
-        const cat = await Cat.findOne(
-            {
-                cid: req.params.cid
-            },
-        );
+        const cat = await Cat.findById(req.params.id)
         res.status(responseCodes.ok).json(cat.comments);
     }
     catch (err) {
@@ -123,11 +89,11 @@ catRoutes.route("/api/cats/:cid/comments").get(async (req, res) => {
 });
 
 
-catRoutes.route("/api/cats/:cid/comments").post(async (req, res) => {
+catRoutes.route("/api/cats/:id/comments").post(async (req, res) => {
     try {
         const cat = await Cat.findOneAndUpdate(
             {
-                cid: req.params.cid
+                _id: mongoose.Types.ObjectId(req.params.id)
             },
             {
                 $addToSet: {
@@ -147,11 +113,11 @@ catRoutes.route("/api/cats/:cid/comments").post(async (req, res) => {
     }
 });
 
-catRoutes.route("/api/cats/:cid/comments/:commentId").delete(async (req, res) => {
+catRoutes.route("/api/cats/:id/comments/:commentId").delete(async (req, res) => {
     try {
         const cat = await Cat.findOneAndUpdate(
             {
-                cid: req.params.cid
+                _id: mongoose.Types.ObjectId(req.params.id)
             },
             {
                 $pull: {
