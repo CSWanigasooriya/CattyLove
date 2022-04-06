@@ -72,7 +72,6 @@ export default function Create(props) {
     return (
         <div>
             <Dialog
-                fullScreen
                 open={props.open}
                 onClose={props.handleClose}
                 TransitionComponent={Transition}
