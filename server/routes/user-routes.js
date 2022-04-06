@@ -7,7 +7,9 @@ const userRoutes = express.Router();
 const responseCodes = require("../models/response-codes");
 
 const User = require("../models/user.model");
+const Cat = require("../models/cat.model");
 
+const mongoose = require('mongoose');
 
 userRoutes.route("/api/users").get(async (req, res) => {
     try {
@@ -19,13 +21,9 @@ userRoutes.route("/api/users").get(async (req, res) => {
     }
 });
 
-userRoutes.route("/api/users/:uid").get(async (req, res) => {
+userRoutes.route("/api/users/:id").get(async (req, res) => {
     try {
-        const user = await User.findOne(
-            {
-                uid: req.params.uid
-            }
-        );
+        const user = await User.findById(req.params.id);
         res.status(responseCodes.ok).json(user);
     }
     catch (err) {
@@ -34,25 +32,32 @@ userRoutes.route("/api/users/:uid").get(async (req, res) => {
 });
 
 
-userRoutes.route("/api/users/:uid/wishlist").get(async (req, res) => {
+userRoutes.route("/api/users/:id/wishlist").get(async (req, res) => {
     try {
-        const user = await User.findOne(
-            {
-                _id: req.params.uid
+
+        const cats = await Cat.aggregate([{
+            $lookup: {
+                from: "users",
+                localField: 'cid',
+                foreignField: '
+                wishlist',
+                as: "wishlist"
             }
-        );
-        res.status(responseCodes.ok).json(user.wishlist);
+        }])
+
+        res.status(responseCodes.ok).json(cats);
     }
     catch (err) {
         res.json({ status: "error", error: err.message });
     }
 });
 
-userRoutes.route("/api/users/:uid/wishlist").post(async (req, res) => {
+userRoutes.route("/api/users/:id/wishlist").post(async (req, res) => {
     try {
         const user = await User.findOneAndUpdate(
             {
-                _id: req.params.uid
+                _id: mongoose.Types.ObjectId(req.params.id),
+                'wishlist': { $ne: req.body.cid }
             },
             {
                 $addToSet: { wishlist: req.body.cid }
@@ -65,11 +70,11 @@ userRoutes.route("/api/users/:uid/wishlist").post(async (req, res) => {
     }
 });
 
-userRoutes.route("/api/users/:uid/wishlist/:cid").delete(async (req, res) => {
+userRoutes.route("/api/users/:id/wishlist/:cid").delete(async (req, res) => {
     try {
         const user = await User.findOneAndUpdate(
             {
-                _id: req.params.uid
+                _id: mongoose.Types.ObjectId(req.params.id)
             },
             {
                 $pull: { wishlist: req.params.cid }
