@@ -56,10 +56,7 @@ export default function Create(props) {
                 gender: data.get('gender'),
                 description: data.get('catDescription'),
                 photoUrl: data.get('catImage'),
-                location: {
-                    lng: data.get('longitude'),
-                    lat: data.get('latitude')
-                }
+                likedBy: []
             }),
         })
 

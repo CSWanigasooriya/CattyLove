@@ -135,17 +135,11 @@ export default function Feed(props) {
             return;
         }
 
-        if (Array.from(props.data.likedBy).some(id => id === uid)) {
-            setLike(false)
-            unlikeCat().then(() => {
-                props.onLike(false)
-            })
-        } else {
-            setLike(true)
-            likeCat().then(() => {
-                props.onLike(true)
-            })
-        }
+        setLike(!liked)
+        likeCat().then(() => {
+            props.onLike(true)
+        })
+
     };
 
     const handleViewClick = () => {
@@ -172,8 +166,8 @@ export default function Feed(props) {
     }
 
     async function likeCat() {
-        const response = await fetch(`http://localhost:4000/api/cats/${props.data.cid}/like/`, {
-            method: 'POST',
+        const response = await fetch(`http://localhost:4000/api/cats/${props.data._id}/like/`, {
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -181,21 +175,6 @@ export default function Feed(props) {
                 uid: localStorage.getItem('uid'),
             }),
         })
-        const data = await response.json();
-        return data;
-    }
-
-    async function unlikeCat() {
-        const response = await fetch(`http://localhost:4000/api/cats/${props.data.cid}/unlike/`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                uid: localStorage.getItem('uid')
-            }),
-        })
-
         const data = await response.json();
         return data;
     }
@@ -218,7 +197,7 @@ export default function Feed(props) {
 
 
     async function setCatComment() {
-        const response = await fetch(`http://localhost:4000/api/cats/${props.data.cid}/comments/`, {
+        const response = await fetch(`http://localhost:4000/api/cats/${props.data._id}/comments/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -234,7 +213,7 @@ export default function Feed(props) {
     }
 
     async function getCatComments() {
-        const response = await fetch(`http://localhost:4000/api/cats/${props.data.cid}/comments/`, {
+        const response = await fetch(`http://localhost:4000/api/cats/${props.data._id}/comments/`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -245,7 +224,7 @@ export default function Feed(props) {
     }
 
     async function deleteComment(commentId) {
-        const response = await fetch(`http://localhost:4000/api/cats/${props.data.cid}/comments/${commentId}`, {
+        const response = await fetch(`http://localhost:4000/api/cats/${props.data._id}/comments/${commentId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'

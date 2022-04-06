@@ -10,9 +10,9 @@ const Comment = new mongoose.Schema({
 
 
 const Cat = new mongoose.Schema({
-    cid: { type: String, required: true },
+    cid: { type: String, required: true, unique: true },
     displayName: { type: String },
-    gender: { type: String, required: true },
+    gender: { type: String, },
     description: { type: String },
     photoURL: { type: String },
     location: {
@@ -23,10 +23,8 @@ const Cat = new mongoose.Schema({
             lng: Number
         }
     },
-    likedBy: [{ type: String }],
-    comments: [{
-        type: Comment
-    }]
+    likedBy: { type: Array, default: [], unique: true, required: false },
+    comments: { type: Array, ref: 'Comment', unique: false, required: false }
 }, {
     timestamps: true,
     collection: 'cats'
