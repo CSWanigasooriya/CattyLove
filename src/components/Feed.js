@@ -181,7 +181,7 @@ export default function Feed(props) {
 
     async function addToWishlist() {
         const uid = localStorage.getItem('uid');
-        const response = await fetch(`http://localhost:4000/api/users/${uid}/wishlist/add/`, {
+        const response = await fetch(`http://localhost:4000/api/users/${uid}/wishlist/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -313,19 +313,24 @@ export default function Feed(props) {
                         {(comments.length > 0) ?
                             <List>
                                 {Array.from(comments).map((data, index) => (
-                                    <ListItem key={index}>
-                                        <Grid container>
-                                            <Grid item xs={12}>
-                                                <ListItemText primary={data.comment}></ListItemText>
-                                                <ListItemSecondaryAction sx={{ display: uid === data.uid ? "block" : "none" }}>
-                                                    <IconButton onClick={() => handleDeleteComment(data.commentId)}><Delete sx={{ color: red[500] }} /></IconButton>
-                                                </ListItemSecondaryAction>
+                                    <div key={index}>
+
+                                        <ListItem>
+                                            <Grid container>
+                                                <Grid item xs={12}>
+                                                    <ListItemText primary={data.comment}></ListItemText>
+                                                    <ListItemSecondaryAction sx={{ display: uid === data.uid ? "block" : "none" }}>
+                                                        <IconButton onClick={() => handleDeleteComment(data.commentId)}><Delete sx={{ color: red[500] }} /></IconButton>
+                                                    </ListItemSecondaryAction>
+                                                </Grid>
+                                                <Grid item xs={12}>
+                                                    <ListItemText secondary={Date(data.updatedAt)}></ListItemText>
+                                                </Grid>
                                             </Grid>
-                                            <Grid item xs={12}>
-                                                <ListItemText secondary={data.updatedAt}></ListItemText>
-                                            </Grid>
-                                        </Grid>
-                                    </ListItem>
+                                        </ListItem>
+                                        <Divider />
+
+                                    </div>
                                 ))}
 
                             </List>

@@ -39,8 +39,7 @@ userRoutes.route("/api/users/:id/wishlist").get(async (req, res) => {
             $lookup: {
                 from: "users",
                 localField: 'cid',
-                foreignField: '
-                wishlist',
+                foreignField: 'wishlist',
                 as: "wishlist"
             }
         }])
