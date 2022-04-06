@@ -34,7 +34,7 @@ export default function Preview(props) {
       },
     });
     const data = await response.json();
-
+    console.log(data);
     setCat(data);
   }
 
@@ -163,6 +163,7 @@ export default function Preview(props) {
                     onClick={handleLikeButtonClick}
                     sx={{ color: liked ? blue[700] : blue[700] }}
                   >
+                    {JSON.stringify(cat.likedBy)}
                     {/* <Button onClick={handleLikeButtonClick} sx={{ color: blue[700] }}> */}
                     <ThumbUp sx={{ mr: 1 }} />
                   </Button>

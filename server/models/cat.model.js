@@ -23,11 +23,7 @@ const Cat = new mongoose.Schema({
             lng: Number
         }
     },
-    likedBy: [{
-        type: {
-            uid: String,
-        }
-    }],
+    likedBy: [{ type: String }],
     comments: [{
         type: Comment
     }]
