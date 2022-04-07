@@ -268,15 +268,15 @@ export default function Preview() {
           </CardContent>
 
           <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
-            <Button>
+            <Button disableRipple >
               <LocationOnIcon sx={{ mr: 1 }} />
               {cat && cat.location ? cat.location : 0}
             </Button>
-            <Button>
+            <Button disableRipple >
               <ThumbUp sx={{ mr: 1 }} />
               {cat && cat.likedBy ? cat.likedBy.length : 0} {cat && cat.likedBy ? cat.likedBy.length === 1 ? 'like' : 'likes' : 'likes'}
             </Button>
-            <Button>
+            <Button disableRipple >
               <Comment sx={{ mr: 1 }} />
               {cat && cat.comments ? cat.comments.length : 0} {cat && cat.comments ? cat.comments.length === 1 ? 'comment' : 'comments' : 'comment'}
             </Button>
