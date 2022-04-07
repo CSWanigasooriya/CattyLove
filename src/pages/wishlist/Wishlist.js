@@ -15,7 +15,6 @@ export default function Wishlist(props) {
 
     const [wishlist, setWishlist] = React.useState([]);
 
-
     React.useEffect(() => {
         getWishlistedCats()
     }, []);
@@ -39,8 +38,6 @@ export default function Wishlist(props) {
         })
         const data = await response.json();
 
-        console.log(data);
-
         setWishlist([...data])
 
         return data;
@@ -56,7 +53,6 @@ export default function Wishlist(props) {
         })
 
         const data = await response.json();
-        console.log(data);
         return data;
     }
 
@@ -67,7 +63,6 @@ export default function Wishlist(props) {
             <h1>Wishlist</h1>
 
             <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
-
                 {Array.from(wishlist).map((cat, index) => (
                     <div key={index}>
                         <ListItem button>
@@ -76,7 +71,7 @@ export default function Wishlist(props) {
                                     <ImageIcon />
                                 </Avatar>
                             </ListItemAvatar>
-                            <ListItemText primary={cat.displayName} secondary="Jan 9, 2014" />
+                            <ListItemText primary={cat.displayName} secondary={cat.updatedAt} />
                             <ListItemSecondaryAction>
                                 <IconButton onClick={(event) => { handleDelete(cat.cid) }}><Delete sx={{ color: red[500] }} /></IconButton>
                             </ListItemSecondaryAction>
@@ -84,17 +79,6 @@ export default function Wishlist(props) {
                     </div>
                 ))}
             </List>
-
-
-            {Array.from(wishlist).map((cat, index) => (
-                <div key={index}>
-                    <h1>CAT: {JSON.stringify(cat)}</h1>
-                </div>
-            ))}
-
-
-
-
         </div>
     )
 }

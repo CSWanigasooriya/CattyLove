@@ -13,6 +13,7 @@ const Cat = new mongoose.Schema({
     cid: { type: String, required: true, unique: true },
     displayName: { type: String },
     gender: { type: String, },
+    age: { type: String, },
     description: { type: String },
     photoURL: { type: String },
     location: {
@@ -23,6 +24,7 @@ const Cat = new mongoose.Schema({
             lng: Number
         }
     },
+    features: { type: Array, default: [], unique: true, required: false },
     likedBy: { type: Array, default: [], unique: true, required: false },
     comments: { type: Array, ref: 'Comment', unique: false, required: false }
 }, {
