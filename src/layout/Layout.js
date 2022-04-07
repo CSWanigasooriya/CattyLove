@@ -1,9 +1,7 @@
-import { AccountCircle, Favorite, Home, Logout, PersonAdd, Settings } from '@mui/icons-material';
+import { Favorite, Home, Logout } from '@mui/icons-material';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
 import { Avatar, Menu, MenuItem, Tooltip } from '@mui/material';
 import MuiAppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -14,7 +12,6 @@ import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import FactCheckIcon from '@mui/icons-material/FactCheck';
 import ListItemText from '@mui/material/ListItemText';
 import { styled, useTheme } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
@@ -75,21 +72,13 @@ function Layout(props) {
 
     const navigate = useNavigate();
     const theme = useTheme();
-
-    const { window } = props;
     const [open, setOpen] = React.useState(true);
-
-    const [mobileOpen, setMobileOpen] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const openEl = Boolean(anchorEl);
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
-
-    // const handleChange = (event) => {
-    //     setAuth(event.target.checked);
-    // };
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -99,38 +88,31 @@ function Layout(props) {
         setOpen(false);
     };
 
-
-    const handleMenu = (event) => {
-        setAnchorEl(event.currentTarget);
+    const handleMenuItemClick = (event) => {
+        switch (event.currentTarget.id) {
+            case "sign-out":
+                // logic to remove the row
+                signOut() // contain to item.id passed by `show`
+                break;
+            default:
+                break;
+        }
     };
 
-    const handleWishlist = () => {
-
-    }
-
     function handleItemClick(event) {
-        // ⚠️ data and triggerEvent are not used. I've just added them so we have the full list of parameters
-
-        // I use the id attribute defined on the `Item` to identify which one is it
-        // this feel natural to my brain
         switch (event.currentTarget.id) {
             case "home":
                 // logic to remove the row
                 navigate('/user') // contain to item.id passed by `show`
                 break;
             default:
+                navigate('/user/wishlist');
                 break;
         }
-
     }
 
     const handleClose = (event) => {
-        console.log(event.currentTarget.id);
         setAnchorEl(null);
-    };
-
-    const handleDrawerToggle = () => {
-        setMobileOpen(!mobileOpen);
     };
 
     function signOut() {
@@ -207,11 +189,10 @@ function Layout(props) {
                             transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                         >
-                            <MenuItem>
+                            {/* <MenuItem id="profile" onClick={(event) => handleMenuItemClick(event)}>
                                 <Avatar /> Profile
-                            </MenuItem>
-                            <Divider />
-                            <MenuItem>
+                            </MenuItem> */}
+                            <MenuItem id="sign-out" onClick={(event) => handleMenuItemClick(event)}>
                                 <ListItemIcon>
                                     <Logout fontSize="small" />
                                 </ListItemIcon>
@@ -235,14 +216,19 @@ function Layout(props) {
                 open={open}
             >
                 <DrawerHeader>
-
+                    <Toolbar>
+                        <Avatar sx={{ mr: 2 }} />
+                        <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
+                            Catty Love
+                        </Typography>
+                    </Toolbar>
                     <IconButton onClick={handleDrawerClose}>
                         {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
                     </IconButton>
                 </DrawerHeader>
                 <Divider />
                 <List>
-                    <ListItem button>
+                    <ListItem button id="home" onClick={(event) => handleItemClick(event)}>
                         <ListItemIcon>
                             <Home />
                         </ListItemIcon>
@@ -251,7 +237,7 @@ function Layout(props) {
                 </List>
                 <Divider />
                 <List>
-                    <ListItem button>
+                    <ListItem button id="wishlist" onClick={(event) => handleItemClick(event)}>
                         <ListItemIcon>
                             <Favorite />
                         </ListItemIcon>
