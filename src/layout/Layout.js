@@ -19,8 +19,8 @@ import Typography from '@mui/material/Typography';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
-import './Layout.css';
 import logoimage from "../assets/images/logo.png";
+import './Layout.css';
 
 const drawerWidth = 240;
 
@@ -70,9 +70,15 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }));
 
 function Layout(props) {
-
     const navigate = useNavigate();
     const theme = useTheme();
+
+    React.useEffect(() => {
+        if (!isAuthenticated()) {
+            navigate('/');
+        }
+    }, []);
+
     const [open, setOpen] = React.useState(true);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const openEl = Boolean(anchorEl);
@@ -99,6 +105,14 @@ function Layout(props) {
                 break;
         }
     };
+
+    function isAuthenticated() {
+        const jwtToken = localStorage.getItem('token');
+        if (jwtToken === null || jwtToken === undefined) {
+            return false;
+        }
+        return true;
+    }
 
     function handleItemClick(event) {
         switch (event.currentTarget.id) {

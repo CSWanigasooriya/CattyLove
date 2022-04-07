@@ -284,7 +284,7 @@ export default function Feed(props) {
                     </Typography>
                     <Stack spacing={1}> <Stack direction="row" spacing={1}>
                         {props.data && props.data.features ? Array.from(props.data.features).map((data, index) => (
-                            <Chip label={data} color="info" key={index} />
+                            <Chip label={data} variant="outlined" color="info" key={index} />
                         )) :
                             <Chip
                                 label="No Features"
