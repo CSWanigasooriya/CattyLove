@@ -14,6 +14,7 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
+import FeatureInput from "./FeatureInput";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -23,22 +24,24 @@ const initialValues = {
     catId: '',
     catName: '',
     catDescription: '',
-    gender: '',
+    gender: 'Male' | 'Female',
     catImage: '',
+    age: '',
+    features: [],
     longitude: '',
     latitude: '',
 }
 
 export default function Create(props) {
 
+    const [feature, setFeature] = React.useState([])
     const [values, setValues] = useState(initialValues)
     const [openSnack, setOpenSnack] = React.useState(false);
 
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        setCatData(data).then((data) => {
+        setCatData().then((data) => {
             if (data)
                 setOpenSnack(true);
         });
@@ -56,18 +59,26 @@ export default function Create(props) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                cid: data.get('catId'),
-                displayName: data.get('catName'),
-                gender: data.get('gender'),
-                description: data.get('catDescription'),
-                photoUrl: data.get('catImage'),
-                likedBy: []
+                cid: values.catId,
+                displayName: values.catName,
+                gender: values.gender,
+                description: values.catDescription,
+                photoUrl: values.catImage,
+                age: values.age,
+                features: feature,
+                likedBy: [],
+                comments: [],
             }),
         })
 
         const jsonData = await response.json();
-        console.log(jsonData);
+        console.log(values.gender,)
         return jsonData;
+    }
+
+
+    const handleSelecetedTags = (items) => {
+        setFeature(items)
     }
 
 
@@ -120,18 +131,39 @@ export default function Create(props) {
                             value={values.catName}
                             onChange={(event) => setValues({ ...values, catName: event.target.value })}
                         />
+
+                        <FeatureInput
+                            margin="normal"
+                            selectedTags={handleSelecetedTags}
+                            fullWidth
+                            variant="outlined"
+                            id="features"
+                            name="Features"
+                            placeholder="Type feature"
+                            label="Features"
+                        />
                         <FormControl>
                             <FormLabel id="demo-row-radio-buttons-group-label">Gender</FormLabel>
                             <RadioGroup
                                 row
-                                value={values.gender}
                                 onChange={(event) => setValues({ ...values, gender: event.target.value })}
                                 name="row-radio-buttons-group"
                             >
-                                <FormControlLabel value="female" control={<Radio />} label="Female" />
-                                <FormControlLabel value="male" control={<Radio />} label="Male" />
+                                <FormControlLabel value="Female" control={<Radio />} label="Female" />
+                                <FormControlLabel value="Male" control={<Radio />} label="Male" />
                             </RadioGroup>
                         </FormControl>
+
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            type="number"
+                            name="age"
+                            label="Cat Age"
+                            value={values.age}
+                            onChange={(event) => setValues({ ...values, age: event.target.value })}
+                        />
 
                         <TextField
                             margin="normal"

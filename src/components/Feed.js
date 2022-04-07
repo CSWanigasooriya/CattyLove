@@ -5,7 +5,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ThumbUp from '@mui/icons-material/ThumbUp';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import { Button, Grid, List, ListItem, ListItemSecondaryAction, ListItemText } from '@mui/material';
+import { Button, Chip, Grid, List, ListItem, ListItemSecondaryAction, ListItemText, Stack } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -96,7 +96,7 @@ export default function Feed(props) {
         setValues({ ...values, [prop]: event.target.value });
     };
 
-    const handleMouseDownPassword = (event) => {
+    const handleMouseDownText = (event) => {
         event.preventDefault();
     };
 
@@ -143,7 +143,7 @@ export default function Feed(props) {
     };
 
     const handleViewClick = () => {
-        navigate(`/cat/${props.data.cid}/preview`)
+        navigate(`/cat/${props.data._id}/preview`)
     }
 
     const handleDeleteComment = (commentId) => {
@@ -275,11 +275,22 @@ export default function Feed(props) {
                     ))}
                 </Menu>
                 <CardContent>
-                    <Typography variant="body2" color="text.secondary" sx={{
-                        wordWrap: 'break-word',
+                    <Typography variant="body2" gutterBottom color="text.secondary" sx={{
+                        wordWrap: 'break-word', m: 1
                     }}>
-                        {props.data.description}
+                        Description:
+                        <br />
+                        {props.data.description ? props.data.description : 'N/A'}
                     </Typography>
+                    <Stack spacing={1}> <Stack direction="row" spacing={1}>
+                        {props.data && props.data.features ? Array.from(props.data.features).map((data, index) => (
+                            <Chip label={data} color="info" key={index} />
+                        )) :
+                            <Chip
+                                label="No Features"
+                            />}
+                    </Stack>
+                    </Stack>
                 </CardContent>
                 <CardActions disableSpacing>
                     <Button onClick={handleLikeButtonClick} sx={{ color: liked ? blue[700] : blue[700] }}>
@@ -351,7 +362,7 @@ export default function Feed(props) {
                                         <InputAdornment position="end">
                                             <IconButton
                                                 type='button'
-                                                onMouseDown={handleMouseDownPassword}
+                                                onMouseDown={handleMouseDownText}
                                                 onClick={(event) => handleClickSend(event)}
                                                 edge="end"
                                             >

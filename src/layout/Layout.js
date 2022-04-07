@@ -20,6 +20,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import './Layout.css';
+import logoimage from "../assets/images/logo.png";
 
 const drawerWidth = 240;
 
@@ -217,7 +218,7 @@ function Layout(props) {
             >
                 <DrawerHeader>
                     <Toolbar>
-                        <Avatar sx={{ mr: 2 }} />
+                        <Avatar sx={{ mr: 2 }} src={logoimage} />
                         <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
                             Catty Love
                         </Typography>
