@@ -13,7 +13,6 @@ import InputAdornment from '@mui/material/InputAdornment';
 import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Stack from "@mui/material/Stack";
-import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import GoogleMapReact from "google-map-react";
 import React, { useEffect } from "react";
@@ -36,21 +35,6 @@ export default function Preview() {
   })
   const [comments, setComments] = React.useState([]);
   const [cat, setCat] = React.useState({});
-
-  const [values, setValues] = React.useState({
-    comment: "",
-  });
-  const [comments, setComments] = React.useState([]);
-
-  const handleClickSend = (event) => {
-    setValues({
-      ...values,
-      comments: values.comment,
-    });
-    setCatComment().then(() => {
-      getCatComments();
-    });
-  };
 
   useEffect(() => {
     getCatDetails().then((data) => {
