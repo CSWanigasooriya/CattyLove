@@ -10,7 +10,7 @@ import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import loginimage from "../../assets/images/login_image.png";
 import logoimage from "../../assets/images/logo.png";
@@ -23,8 +23,12 @@ const initialValues = {
 
 function Auth() {
   const [values, setValues] = useState(initialValues);
-  const [errorMessage, setErrorMessage] = useState(false);
+  const [eMessage, setErrorMessage] = useState();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log(eMessage);
+  }, [eMessage]);
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -49,6 +53,30 @@ function Auth() {
     } else {
       setErrorMessage(jsonData.errorMessage);
     }
+  }
+
+  function renderElement() {
+    console.log(eMessage);
+    if (eMessage !== undefined)
+      return (
+        <Box
+          fullWidth
+          sx={{
+            backgroundColor: red[500],
+            height: "2em",
+            borderRadius: "2em",
+            mt: "1em",
+            alignItems: "center",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <Typography variant="caption" sx={{ color: "white" }}>
+            {eMessage}
+          </Typography>
+        </Box>
+      );
+    return null;
   }
 
   return (
@@ -125,24 +153,7 @@ function Auth() {
                 Sign In
               </Button>
               {/* Initially hide this, onSubmit show error message */}
-              {/* {errorMessage && ( */}
-              <Box
-                fullWidth
-                sx={{
-                  backgroundColor: red[500],
-                  height: "2em",
-                  borderRadius: "2em",
-                  mt: "1em",
-                  alignItems: "center",
-                  display: "flex",
-                  justifyContent: "center",
-                }}
-              >
-                <Typography variant="caption" sx={{ color: "white" }}>
-                  {errorMessage}
-                </Typography>
-              </Box>
-              {/* )} */}
+              {renderElement()}
             </CardContent>
 
             <CardActions sx={{ m: 1 }}>
