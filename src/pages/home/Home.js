@@ -1,6 +1,5 @@
 import React from "react";
 import Feed from "../../components/Feed";
-import "./Home.css";
 import Create from "../../components/Create";
 import Button from "@mui/material/Button";
 

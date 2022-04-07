@@ -20,7 +20,6 @@ import PropTypes from "prop-types";
 import React from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import logoimage from "../assets/images/logo.png";
-import "./Layout.css";
 
 const drawerWidth = 240;
 
