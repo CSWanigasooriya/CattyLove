@@ -12,15 +12,21 @@ app.use(require("./routes/auth-routes"));
 // get driver connection
 // const dbo = require("./db/conn");
 
-mongoose.connect(process.env.ATLAS_URI, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
+mongoose
+  .connect(process.env.ATLAS_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
     app.listen(port, () => {
-        // perform a database connection when server starts
-        // dbo.connectToServer(function (err) {
-        //     if (err) console.error(err);
+      // perform a database connection when server starts
+      // dbo.connectToServer(function (err) {
+      //     if (err) console.error(err);
 
-        // });
-        console.log(`Server is running on port: ${port}`);
+      // });
+      console.log(`Server is running on port: ${port}`);
     });
-}).catch(err => {
+  })
+  .catch((err) => {
     console.log("Error connecting to database", err);
-});
+  });

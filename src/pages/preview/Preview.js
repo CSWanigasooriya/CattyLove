@@ -1,24 +1,32 @@
 import { Comment, Delete, Send, ThumbUp } from "@mui/icons-material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import NavigationIcon from '@mui/icons-material/Navigation';
-import { Button, Chip, Divider, Grid, List, ListItem, ListItemSecondaryAction, ListItemText } from "@mui/material";
-import Box from '@mui/material/Box';
+import NavigationIcon from "@mui/icons-material/Navigation";
+import {
+  Button,
+  Chip,
+  Divider,
+  Grid,
+  List,
+  ListItem,
+  ListItemSecondaryAction,
+  ListItemText,
+} from "@mui/material";
+import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
 import { blue, red } from "@mui/material/colors";
-import FormControl from '@mui/material/FormControl';
-import IconButton from '@mui/material/IconButton';
-import InputAdornment from '@mui/material/InputAdornment';
-import InputLabel from '@mui/material/InputLabel';
-import OutlinedInput from '@mui/material/OutlinedInput';
+import FormControl from "@mui/material/FormControl";
+import IconButton from "@mui/material/IconButton";
+import InputAdornment from "@mui/material/InputAdornment";
+import InputLabel from "@mui/material/InputLabel";
+import OutlinedInput from "@mui/material/OutlinedInput";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import GoogleMapReact from "google-map-react";
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import logoimage from "../../assets/images/logo.png";
-
 
 //The location of where the cat currently resides should be given using google maps API.
 
@@ -27,26 +35,26 @@ const Marker = ({ color }) => <div>{<NavigationIcon color={color} />}</div>;
 export default function Preview() {
   const center = { lat: 6.9366020011364125, lng: 79.84251072596648 };
   const zoom = 11;
-  const uid = localStorage.getItem('uid');
+  const uid = localStorage.getItem("uid");
   let { id } = useParams();
 
   const [values, setValues] = React.useState({
-    comment: '',
-  })
+    comment: "",
+  });
   const [comments, setComments] = React.useState([]);
   const [cat, setCat] = React.useState({});
 
   useEffect(() => {
     getCatDetails().then((data) => {
-      getCatComments(data._id)
-    })
+      getCatComments(data._id);
+    });
   }, []);
 
   const handleDeleteComment = (commentId) => {
     deleteComment(commentId).then((data) => {
-      getCatComments(data._id)
-    })
-  }
+      getCatComments(data._id);
+    });
+  };
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -59,13 +67,12 @@ export default function Preview() {
   const handleClickSend = (event) => {
     setValues({
       ...values,
-      comments: values.comment
+      comments: values.comment,
     });
     setCatComment().then((data) => {
-      getCatComments(data._id)
-    })
+      getCatComments(data._id);
+    });
   };
-
 
   async function getCatDetails() {
     const response = await fetch(`http://localhost:4000/api/cats/${id}`, {
@@ -80,44 +87,52 @@ export default function Preview() {
   }
 
   async function setCatComment() {
-    const response = await fetch(`http://localhost:4000/api/cats/${cat._id}/comments/`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        uid: localStorage.getItem('uid'),
-        comment: values.comment
-      }),
-    })
+    const response = await fetch(
+      `http://localhost:4000/api/cats/${cat._id}/comments/`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          uid: localStorage.getItem("uid"),
+          comment: values.comment,
+        }),
+      }
+    );
 
     const data = await response.json();
     return data;
   }
 
   async function getCatComments(cid) {
-    const response = await fetch(`http://localhost:4000/api/cats/${cid}/comments/`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    });
+    const response = await fetch(
+      `http://localhost:4000/api/cats/${cid}/comments/`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     const data = await response.json();
-    setComments(data)
+    setComments(data);
     return data;
   }
 
   async function deleteComment(commentId) {
-    const response = await fetch(`http://localhost:4000/api/cats/${cat._id}/comments/${commentId}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json'
+    const response = await fetch(
+      `http://localhost:4000/api/cats/${cat._id}/comments/${commentId}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
       }
-    })
+    );
     const data = await response.json();
     return data;
   }
-
 
   return (
     <div>
@@ -229,61 +244,98 @@ export default function Preview() {
         </Box>
       </Card> */}
 
-      <Card sx={{ display: 'flex' }}>
+      <Card sx={{ display: "flex" }}>
         <CardMedia
           component="img"
           sx={{ width: 200, p: 2 }}
           image={logoimage}
         />
-        <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
-          <CardContent sx={{ flex: '1 0 auto' }}>
+        <Box sx={{ display: "flex", flexDirection: "column", flexGrow: 1 }}>
+          <CardContent sx={{ flex: "1 0 auto" }}>
             <Typography component="div" variant="h5" sx={{ color: blue[700] }}>
               {cat.displayName}
             </Typography>
             <Divider />
-            <Typography variant="subtitle1" color="text.secondary" component="div">
+            <Typography
+              variant="subtitle1"
+              color="text.secondary"
+              component="div"
+            >
               <b> Age:</b> {cat.age}
             </Typography>
-            <Typography variant="subtitle1" color="text.secondary" component="div">
+            <Typography
+              variant="subtitle1"
+              color="text.secondary"
+              component="div"
+            >
               <b> Gender:</b> {cat.gender}
             </Typography>
-            <Typography variant="subtitle1" color="text.secondary" component="div">
+            <Typography
+              variant="subtitle1"
+              color="text.secondary"
+              component="div"
+            >
               <b> Location:</b> {cat.location}
             </Typography>
-            <Typography variant="subtitle1" color="text.secondary" component="div">
+            <Typography
+              variant="subtitle1"
+              color="text.secondary"
+              component="div"
+            >
               <b> Description:</b> {cat.description}
             </Typography>
-            <Typography variant="subtitle1" color="text.secondary" component="div">
+            <Typography
+              variant="subtitle1"
+              color="text.secondary"
+              component="div"
+            >
               <b> Features:</b>
-              <Stack spacing={1}> <Stack direction="row" spacing={1}>
-                {cat && cat.features ? Array.from(cat.features).map((data, index) => (
-                  <Chip label={data} variant="outlined" color="info" key={index} />
-                )) :
-                  <Chip
-                    label="No Features"
-                  />}
-              </Stack>
+              <Stack spacing={1}>
+                {" "}
+                <Stack direction="row" spacing={1}>
+                  {cat && cat.features ? (
+                    Array.from(cat.features).map((data, index) => (
+                      <Chip
+                        label={data}
+                        variant="outlined"
+                        color="info"
+                        key={index}
+                      />
+                    ))
+                  ) : (
+                    <Chip label="No Features" />
+                  )}
+                </Stack>
               </Stack>
             </Typography>
           </CardContent>
 
-          <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
-            <Button disableRipple >
+          <Box sx={{ display: "flex", alignItems: "center", pl: 1, pb: 1 }}>
+            <Button disableRipple>
               <LocationOnIcon sx={{ mr: 1 }} />
               {cat && cat.location ? cat.location : 0}
             </Button>
-            <Button disableRipple >
+            <Button disableRipple>
               <ThumbUp sx={{ mr: 1 }} />
-              {cat && cat.likedBy ? cat.likedBy.length : 0} {cat && cat.likedBy ? cat.likedBy.length === 1 ? 'like' : 'likes' : 'likes'}
+              {cat && cat.likedBy ? cat.likedBy.length : 0}{" "}
+              {cat && cat.likedBy
+                ? cat.likedBy.length === 1
+                  ? "like"
+                  : "likes"
+                : "likes"}
             </Button>
-            <Button disableRipple >
+            <Button disableRipple>
               <Comment sx={{ mr: 1 }} />
-              {cat && cat.comments ? cat.comments.length : 0} {cat && cat.comments ? cat.comments.length === 1 ? 'comment' : 'comments' : 'comment'}
+              {cat && cat.comments ? cat.comments.length : 0}{" "}
+              {cat && cat.comments
+                ? cat.comments.length === 1
+                  ? "comment"
+                  : "comments"
+                : "comment"}
             </Button>
           </Box>
         </Box>
       </Card>
-
 
       <div style={{ height: "50vh" }}>
         <GoogleMapReact
@@ -297,15 +349,14 @@ export default function Preview() {
         </GoogleMapReact>
       </div>
 
-
-      <Card sx={{ display: 'flex' }}>
-        <CardContent sx={{ flex: '1 0 auto' }}>
+      <Card sx={{ display: "flex" }}>
+        <CardContent sx={{ flex: "1 0 auto" }}>
           <Typography variant="h5" sx={{ color: blue[700] }}>
             <b> Comments:</b>
           </Typography>
           <Divider />
 
-          {(cat && cat.comments) ?
+          {cat && cat.comments ? (
             <List>
               {Array.from(comments).map((data, index) => (
                 <div key={index}>
@@ -313,12 +364,20 @@ export default function Preview() {
                     <Grid container>
                       <Grid item xs={12}>
                         <ListItemText primary={data.comment}></ListItemText>
-                        <ListItemSecondaryAction sx={{ display: uid === data.uid ? "block" : "none" }}>
-                          <IconButton onClick={() => handleDeleteComment(data.commentId)}><Delete sx={{ color: red[500] }} /></IconButton>
+                        <ListItemSecondaryAction
+                          sx={{ display: uid === data.uid ? "block" : "none" }}
+                        >
+                          <IconButton
+                            onClick={() => handleDeleteComment(data.commentId)}
+                          >
+                            <Delete sx={{ color: red[500] }} />
+                          </IconButton>
                         </ListItemSecondaryAction>
                       </Grid>
                       <Grid item xs={12}>
-                        <ListItemText secondary={Date(data.updatedAt)}></ListItemText>
+                        <ListItemText
+                          secondary={Date(data.updatedAt)}
+                        ></ListItemText>
                       </Grid>
                     </Grid>
                   </ListItem>
@@ -326,23 +385,29 @@ export default function Preview() {
                 </div>
               ))}
             </List>
-            :
+          ) : (
             <Typography paragraph sx={{ m: 1 }}>
               No comments yet.
             </Typography>
-          }
+          )}
 
-          <Grid component="form" onSubmit={e => { e.preventDefault(); }} sx={{ mt: 3 }}>
+          <Grid
+            component="form"
+            onSubmit={(e) => {
+              e.preventDefault();
+            }}
+            sx={{ mt: 3 }}
+          >
             <FormControl variant="outlined" fullWidth>
               <InputLabel htmlFor="send-comment">Comment</InputLabel>
               <OutlinedInput
                 id="send-comment"
-                onChange={handleChange('comment')}
+                onChange={handleChange("comment")}
                 value={values.comment}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
-                      type='button'
+                      type="button"
                       onMouseDown={handleMouseDownText}
                       onClick={(event) => handleClickSend(event)}
                       edge="end"
@@ -355,11 +420,8 @@ export default function Preview() {
               />
             </FormControl>
           </Grid>
-
-
         </CardContent>
       </Card>
-
     </div>
   );
 }
