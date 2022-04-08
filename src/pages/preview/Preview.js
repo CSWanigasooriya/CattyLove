@@ -171,7 +171,7 @@ export default function Preview() {
             <CardMedia
               component="img"
               sx={{ width: 200, p: 2 }}
-              image={cat.photoURL != null ? cat.photoURL : logoimage}
+              image={cat.photoURL ? cat.photoURL : logoimage}
             />
             <Box sx={{ display: "flex", flexDirection: "column", flexGrow: 1 }}>
               <CardContent sx={{ flex: "1 0 auto" }}>
