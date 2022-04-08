@@ -1,5 +1,11 @@
 import { Delete } from "@mui/icons-material";
-import { Divider, IconButton, ListItemSecondaryAction, Snackbar, Typography } from "@mui/material";
+import {
+  Divider,
+  IconButton,
+  ListItemSecondaryAction,
+  Snackbar,
+  Typography,
+} from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import { red } from "@mui/material/colors";
 import List from "@mui/material/List";
@@ -17,7 +23,7 @@ export default function Wishlist() {
 
   React.useEffect(() => {
     getWishlistedCats();
-    return () => { };
+    return () => {};
   }, []);
 
   const handleDelete = (id) => {
@@ -73,7 +79,11 @@ export default function Wishlist() {
       <List sx={{ width: "100%", bgcolor: "background.paper" }}>
         {Array.from(wishlist).map((cat, index) => (
           <div key={index}>
-            <ListItem alignItems="flex-start" button onClick={(event) => handleItemClick(cat._id)}>
+            <ListItem
+              alignItems="flex-start"
+              button
+              onClick={(event) => handleItemClick(cat._id)}
+            >
               <ListItemAvatar>
                 <Avatar alt="" src="" />
               </ListItemAvatar>
@@ -82,14 +92,14 @@ export default function Wishlist() {
                 secondary={
                   <React.Fragment>
                     <Typography
-                      sx={{ display: 'inline' }}
+                      sx={{ display: "inline" }}
                       component="span"
                       variant="body2"
                       color="text.primary"
                     >
                       {cat.address}
                     </Typography>
-                    {`  -   ${cat.city ? cat.city : 'N/A'}`}
+                    {`  -   ${cat.city ? cat.city : "N/A"}`}
                   </React.Fragment>
                 }
               />
@@ -107,7 +117,6 @@ export default function Wishlist() {
           </div>
         ))}
       </List>
-
 
       <Snackbar
         open={openSnack}

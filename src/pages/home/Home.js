@@ -9,7 +9,7 @@ function Home() {
 
   React.useEffect(() => {
     getData();
-    return () => { };
+    return () => {};
   }, []);
 
   const handleLikeEvent = (event, index) => {

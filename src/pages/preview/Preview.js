@@ -3,13 +3,14 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import NavigationIcon from "@mui/icons-material/Navigation";
 import {
   Button,
-  Chip, Divider,
+  Chip,
+  Divider,
   Grid,
   List,
   ListItem,
   ListItemSecondaryAction,
   ListItemText,
-  Snackbar
+  Snackbar,
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
@@ -51,7 +52,7 @@ export default function Preview() {
     getCatDetails().then((data) => {
       getCatComments(data._id);
     });
-    return () => { };
+    return () => {};
   }, []);
 
   const handleDeleteComment = (commentId) => {
@@ -176,7 +177,11 @@ export default function Preview() {
             <Box sx={{ display: "flex", flexDirection: "column", flexGrow: 1 }}>
               <CardContent sx={{ flex: "1 0 auto" }}>
                 <Box>
-                  <Typography component="div" variant="h4" sx={{ color: blue[700] }}>
+                  <Typography
+                    component="div"
+                    variant="h4"
+                    sx={{ color: blue[700] }}
+                  >
                     {cat.displayName}
                   </Typography>
                   <Typography
@@ -207,14 +212,14 @@ export default function Preview() {
                   color="text.secondary"
                   component="div"
                 >
-                  <b> Address:</b> {cat.address ? cat.address : 'N/A'}
+                  <b> Address:</b> {cat.address ? cat.address : "N/A"}
                 </Typography>
                 <Typography
                   variant="subtitle1"
                   color="text.secondary"
                   component="div"
                 >
-                  <b> City:</b> {cat.city ? cat.city : 'N/A'}
+                  <b> City:</b> {cat.city ? cat.city : "N/A"}
                 </Typography>
                 <Typography
                   variant="subtitle1"
@@ -252,7 +257,7 @@ export default function Preview() {
               <Box sx={{ display: "flex", alignItems: "center", pl: 1, pb: 1 }}>
                 <Button disableRipple>
                   <LocationOnIcon sx={{ mr: 1 }} />
-                  {cat.lat && cat.lng ? `${cat.lat} , ${cat.lng}` : 'N/A'}
+                  {cat.lat && cat.lng ? `${cat.lat} , ${cat.lng}` : "N/A"}
                 </Button>
                 <Button disableRipple>
                   <ThumbUp sx={{ mr: 1 }} />
@@ -272,7 +277,10 @@ export default function Preview() {
                       : "comments"
                     : "comment"}
                 </Button>
-                <Button disableRipple onClick={(event) => handleAddToWishlist()}>
+                <Button
+                  disableRipple
+                  onClick={(event) => handleAddToWishlist()}
+                >
                   <Favorite sx={{ mr: 1 }} />
                   Add to Wishlist
                 </Button>
@@ -280,19 +288,26 @@ export default function Preview() {
             </Box>
           </Card>
 
-          {cat && cat.lng && cat.lat ? <div style={{ height: "50vh" }}>
-            <GoogleMapReact
-              id="map"
-              bootstrapURLKeys={{
-                key: "AIzaSyBt2tNTwamNhSga0Mj97Fuuy_5mCvfWpcM",
-              }}
-              defaultCenter={center}
-              center={{ lat: -90 < cat.lat < 90 ? cat.lat : center.lat, lng: -180 < cat.lng < 180 ? cat.lng : center.lng }}
-              defaultZoom={zoom}
-            >
-              <Marker lat={cat.lat} lng={cat.lng} color="primary" />
-            </GoogleMapReact>
-          </div> : <div></div>}
+          {cat && cat.lng && cat.lat ? (
+            <div style={{ height: "50vh" }}>
+              <GoogleMapReact
+                id="map"
+                bootstrapURLKeys={{
+                  key: "AIzaSyBt2tNTwamNhSga0Mj97Fuuy_5mCvfWpcM",
+                }}
+                defaultCenter={center}
+                center={{
+                  lat: -90 < cat.lat < 90 ? cat.lat : center.lat,
+                  lng: -180 < cat.lng < 180 ? cat.lng : center.lng,
+                }}
+                defaultZoom={zoom}
+              >
+                <Marker lat={cat.lat} lng={cat.lng} color="primary" />
+              </GoogleMapReact>
+            </div>
+          ) : (
+            <div></div>
+          )}
 
           <Card sx={{ display: "flex" }}>
             <CardContent sx={{ flex: "1 0 auto" }}>
@@ -310,10 +325,14 @@ export default function Preview() {
                           <Grid item xs={12}>
                             <ListItemText primary={data.comment}></ListItemText>
                             <ListItemSecondaryAction
-                              sx={{ display: uid === data.uid ? "block" : "none" }}
+                              sx={{
+                                display: uid === data.uid ? "block" : "none",
+                              }}
                             >
                               <IconButton
-                                onClick={() => handleDeleteComment(data.commentId)}
+                                onClick={() =>
+                                  handleDeleteComment(data.commentId)
+                                }
                               >
                                 <Delete sx={{ color: red[500] }} />
                               </IconButton>

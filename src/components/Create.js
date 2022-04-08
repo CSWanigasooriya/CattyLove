@@ -14,7 +14,7 @@ import TextField from "@mui/material/TextField";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import React, { useState } from "react";
-import FileBase64 from 'react-file-base64';
+import FileBase64 from "react-file-base64";
 import FeatureInput from "./FeatureInput";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -31,12 +31,11 @@ const initialValues = {
   features: [],
   longitude: "",
   latitude: "",
-  city: ""
+  city: "",
 };
 
 export default function Create(props) {
-
-  const uid = localStorage.getItem('uid')
+  const uid = localStorage.getItem("uid");
 
   const [feature, setFeature] = React.useState([]);
   const [values, setValues] = useState(initialValues);
@@ -73,7 +72,7 @@ export default function Create(props) {
         features: feature,
         likedBy: [],
         comments: [],
-        owner: uid
+        owner: uid,
       }),
     });
 
@@ -117,12 +116,16 @@ export default function Create(props) {
             noValidate
             autoComplete="off"
           >
-
-            <p>Upload Image: <FileBase64
-              type="file"
-              multiple={false}
-              onDone={({ base64 }) => setValues({ ...values, catImage: base64 })}
-            /></p>
+            <p>
+              Upload Image:{" "}
+              <FileBase64
+                type="file"
+                multiple={false}
+                onDone={({ base64 }) =>
+                  setValues({ ...values, catImage: base64 })
+                }
+              />
+            </p>
 
             <TextField
               margin="normal"
@@ -211,7 +214,7 @@ export default function Create(props) {
               }
             />
 
-            <Grid container spacing={2} >
+            <Grid container spacing={2}>
               <Grid item xs={6}>
                 <TextField
                   margin="normal"
@@ -274,7 +277,6 @@ export default function Create(props) {
         onClose={handleClose}
         message="Cat created successfully"
       />
-
     </div>
   );
 }
