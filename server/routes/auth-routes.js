@@ -40,11 +40,9 @@ authRoutes.route("/api/auth/login").post(async (req, res) => {
       );
       res.status(responseCodes.ok).json({ uid: user._id, token });
     } else {
-      res
-        .status(responseCodes.unauthorized)
-        .json({
-          errorMessage: "Incorrect email or password, Please try again.",
-        });
+      res.status(responseCodes.unauthorized).json({
+        errorMessage: "Incorrect email or password, Please try again.",
+      });
     }
   } catch (err) {
     res.json({ status: "error", error: err.message });

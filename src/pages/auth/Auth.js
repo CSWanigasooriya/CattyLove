@@ -14,7 +14,6 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import loginimage from "../../assets/images/login_image.png";
 import logoimage from "../../assets/images/logo.png";
-import "./Auth.css";
 
 const initialValues = {
   email: "",
