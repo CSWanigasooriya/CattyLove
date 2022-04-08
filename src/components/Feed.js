@@ -28,6 +28,7 @@ import React from 'react';
 import {
     useNavigate
 } from 'react-router-dom';
+import moment from 'moment';
 
 //name, gender, description, no of likes the cat has, and a profile picture.
 
@@ -252,7 +253,11 @@ export default function Feed(props) {
                         </IconButton>
                     }
                     title={props.data.displayName}
-                    subheader={props.data.updatedAt}
+                    subheader={
+                        <Typography variant="body2" gutterBottom color="text.secondary" sx={{
+                            wordWrap: 'break-word'
+                        }}>Created {moment(props.data.createdAt).fromNow()}</Typography>
+                    }
                 />
                 <Menu
                     id="lock-menu"
@@ -335,7 +340,7 @@ export default function Feed(props) {
                                                     </ListItemSecondaryAction>
                                                 </Grid>
                                                 <Grid item xs={12}>
-                                                    <ListItemText secondary={Date(data.updatedAt)}></ListItemText>
+                                                    <ListItemText secondary={moment(data.createdAt).fromNow()}></ListItemText>
                                                 </Grid>
                                             </Grid>
                                         </ListItem>
