@@ -3,17 +3,18 @@ import { Grid, Snackbar } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
+import FormControl from "@mui/material/FormControl";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormLabel from "@mui/material/FormLabel";
 import IconButton from "@mui/material/IconButton";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
 import Slide from "@mui/material/Slide";
 import TextField from "@mui/material/TextField";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import React, { useState } from "react";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
+import FileBase64 from 'react-file-base64';
 import FeatureInput from "./FeatureInput";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -21,18 +22,22 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const initialValues = {
-  catId: "",
   catName: "",
   catDescription: "",
   gender: "Male" | "Female",
   catImage: "",
   age: "",
+  address: "",
   features: [],
   longitude: "",
   latitude: "",
+  city: ""
 };
 
 export default function Create(props) {
+
+  const uid = localStorage.getItem('uid')
+
   const [feature, setFeature] = React.useState([]);
   const [values, setValues] = useState(initialValues);
   const [openSnack, setOpenSnack] = React.useState(false);
@@ -48,27 +53,31 @@ export default function Create(props) {
     setOpenSnack(false);
   };
 
-  async function setCatData(data) {
+  async function setCatData() {
     const response = await fetch("http://localhost:4000/api/cats", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        cid: values.catId,
         displayName: values.catName,
         gender: values.gender,
         description: values.catDescription,
         photoUrl: values.catImage,
+        address: values.address,
+        lng: values.longitude,
+        photoURL: values.catImage,
+        lat: values.latitude,
+        city: values.city,
         age: values.age,
         features: feature,
         likedBy: [],
         comments: [],
+        owner: uid
       }),
     });
 
     const jsonData = await response.json();
-    console.log(values.gender);
     return jsonData;
   }
 
@@ -108,21 +117,13 @@ export default function Create(props) {
             noValidate
             autoComplete="off"
           >
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="catId"
-              type="text"
-              name="catId"
-              label="Cat ID"
-              variant="outlined"
-              value={values.catId}
-              onChange={(event) =>
-                setValues({ ...values, catId: event.target.value })
-              }
-              autoFocus
-            />
+
+            <p>Upload Image: <FileBase64
+              type="file"
+              multiple={false}
+              onDone={({ base64 }) => setValues({ ...values, catImage: base64 })}
+            /></p>
+
             <TextField
               margin="normal"
               required
@@ -134,6 +135,7 @@ export default function Create(props) {
               onChange={(event) =>
                 setValues({ ...values, catName: event.target.value })
               }
+              autoFocus
             />
 
             <FeatureInput
@@ -188,6 +190,65 @@ export default function Create(props) {
               required
               fullWidth
               type="text"
+              name="Address"
+              label="Cat Address"
+              value={values.address}
+              onChange={(event) =>
+                setValues({ ...values, address: event.target.value })
+              }
+            />
+
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              type="text"
+              name="City"
+              label="City"
+              value={values.city}
+              onChange={(event) =>
+                setValues({ ...values, city: event.target.value })
+              }
+            />
+
+            <Grid container spacing={2} >
+              <Grid item xs={6}>
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  type="number"
+                  InputProps={{ inputProps: { min: -90, max: 90 } }}
+                  name="Latitude"
+                  label="Latitude"
+                  value={values.latitude}
+                  onChange={(event) =>
+                    setValues({ ...values, latitude: event.target.value })
+                  }
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  type="number"
+                  InputProps={{ inputProps: { min: -180, max: 180 } }}
+                  name="Longitude"
+                  label="Longitude"
+                  value={values.longitude}
+                  onChange={(event) =>
+                    setValues({ ...values, longitude: event.target.value })
+                  }
+                />
+              </Grid>
+            </Grid>
+
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              type="text"
               name="catDescription"
               label="Cat Description"
               value={values.catDescription}
@@ -213,6 +274,7 @@ export default function Create(props) {
         onClose={handleClose}
         message="Cat created successfully"
       />
+
     </div>
   );
 }

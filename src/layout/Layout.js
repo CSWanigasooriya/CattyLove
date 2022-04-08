@@ -76,6 +76,7 @@ function Layout(props) {
     if (!isAuthenticated()) {
       navigate("/");
     }
+    return () => { };
   }, []);
 
   const [open, setOpen] = React.useState(true);

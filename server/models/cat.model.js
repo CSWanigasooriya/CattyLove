@@ -1,40 +1,36 @@
 const mongoose = require("mongoose");
 
 const Comment = new mongoose.Schema(
-  {
-    uid: { type: String, required: true },
-    comment: { type: String },
-    commentId: { type: mongoose.ObjectId, required: true },
-  },
-  {
-    timestamps: true,
-  }
+    {
+        uid: { type: String, required: true },
+        comment: { type: String },
+        commentId: { type: mongoose.ObjectId, required: true },
+    },
+    {
+        timestamps: true,
+    }
 );
 
 const Cat = new mongoose.Schema(
-  {
-    cid: { type: String, required: true, unique: true },
-    displayName: { type: String },
-    gender: { type: String },
-    age: { type: String },
-    description: { type: String },
-    photoURL: { type: String },
-    location: {
-      type: {
-        address: String,
-        city: String,
-        lat: Number,
-        lng: Number,
-      },
+    {
+        displayName: { type: String },
+        gender: { type: String },
+        age: { type: String },
+        description: { type: String },
+        photoURL: { type: String },
+        address: { type: String },
+        city: { type: String },
+        lat: { type: Number },
+        lng: { type: Number },
+        features: { type: Array, default: [], unique: true, required: false },
+        likedBy: { type: Array, default: [], unique: true, required: false },
+        comments: [Comment],
+        owner: { type: String },
     },
-    features: { type: Array, default: [], unique: true, required: false },
-    likedBy: { type: Array, default: [], unique: true, required: false },
-    comments: { type: Array, ref: "Comment", unique: false, required: false },
-  },
-  {
-    timestamps: true,
-    collection: "cats",
-  }
+    {
+        timestamps: true,
+        collection: "cats",
+    }
 );
 
 const model = mongoose.model("Cat", Cat);
