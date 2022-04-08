@@ -34,6 +34,7 @@ import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { format } from "timeago.js"
 
 //name, gender, description, no of likes the cat has, and a profile picture.
 
@@ -49,13 +50,14 @@ const ExpandMore = styled((props) => {
     }),
 }));
 
-const options = ["Add to Wishlist"];
+let options = ["Add to Wishlist"];
 
 export default function Feed(props) {
     const uid = localStorage.getItem("uid");
 
     React.useEffect(() => {
         getCatComments();
+        return () => { };
     }, []);
 
     const navigate = useNavigate();
@@ -190,7 +192,7 @@ export default function Feed(props) {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    cid: props.data.cid,
+                    _id: props.data._id,
                 }),
             }
         );
@@ -267,7 +269,7 @@ export default function Feed(props) {
                         </IconButton>
                     }
                     title={props.data.displayName}
-                    subheader={props.data.updatedAt}
+                    subheader={format(props.data.createdAt)}
                 />
                 <Menu
                     id="lock-menu"
@@ -372,7 +374,7 @@ export default function Feed(props) {
                                                 </Grid>
                                                 <Grid item xs={12}>
                                                     <ListItemText
-                                                        secondary={Date(data.updatedAt)}
+                                                        secondary={format(data.createdAt)}
                                                     ></ListItemText>
                                                 </Grid>
                                             </Grid>

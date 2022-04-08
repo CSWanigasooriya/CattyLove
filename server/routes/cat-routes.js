@@ -13,7 +13,7 @@ const responseCodes = require("../models/response-codes");
 // Get all cats
 catRoutes.route("/api/cats").get(async (req, res) => {
   try {
-    const cat = await Cat.find();
+    const cat = await Cat.find().sort({ createdAt: -1 });
     res.status(responseCodes.ok).json(cat);
   } catch (err) {
     res.json({ status: "error", error: err.message });
@@ -32,10 +32,9 @@ catRoutes.route("/api/cats/:id").get(async (req, res) => {
 
 // Create a cat
 catRoutes.route("/api/cats").post(async (req, res) => {
-  const cat = new Cat(req.body);
   try {
-    const savedCat = await cat.save();
-    res.status(responseCodes.ok).json(savedCat);
+    const cat = await Cat.create(req.body);
+    res.status(responseCodes.ok).json(cat);
   } catch (err) {
     res.json({ status: "error", error: err.message });
   }
@@ -64,10 +63,8 @@ catRoutes.route("/api/cats/:id/like").put(async (req, res) => {
 catRoutes.route("/api/cats/:id").delete(async (req, res) => {
   try {
     const cat = await Cat.findById(req.params.id);
-    if (cat.cid === req.body.cid) {
-      const deletedCat = await cat.deleteOne();
-      res.status(responseCodes.ok).json(deletedCat);
-    }
+    const deletedCat = await cat.deleteOne();
+    res.status(responseCodes.ok).json(deletedCat);
   } catch (err) {
     res.json({ status: "error", error: err.message });
   }

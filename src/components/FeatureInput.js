@@ -7,9 +7,11 @@ export default function FeatureInput({ ...props }) {
   const { selectedTags, placeholder, tags, ...other } = props;
   const [inputValue, setInputValue] = React.useState("");
   const [selectedItem, setSelectedItem] = React.useState([]);
+
   useEffect(() => {
     setSelectedItem(tags);
   }, [tags]);
+
   useEffect(() => {
     selectedTags(selectedItem);
   }, [selectedItem, selectedTags]);

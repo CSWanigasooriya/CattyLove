@@ -31,16 +31,11 @@ userRoutes.route("/api/users/:id").get(async (req, res) => {
 
 userRoutes.route("/api/users/:id/wishlist").get(async (req, res) => {
   try {
-    const cats = await Cat.aggregate([
-      {
-        $lookup: {
-          from: "users",
-          localField: "cid",
-          foreignField: "wishlist",
-          as: "wishlist",
-        },
-      },
-    ]);
+    const user = await User.findById(req.params.id);
+
+    const wishlist = user.wishlist;
+
+    const cats = await Cat.find({ _id: { $in: wishlist } });
 
     res.status(responseCodes.ok).json(cats);
   } catch (err) {
@@ -53,10 +48,10 @@ userRoutes.route("/api/users/:id/wishlist").post(async (req, res) => {
     const user = await User.findOneAndUpdate(
       {
         _id: mongoose.Types.ObjectId(req.params.id),
-        wishlist: { $ne: req.body.cid },
+        wishlist: { $ne: req.body._id },
       },
       {
-        $addToSet: { wishlist: req.body.cid },
+        $addToSet: { wishlist: req.body._id },
       }
     );
     res.status(responseCodes.ok).json(user);
@@ -65,14 +60,14 @@ userRoutes.route("/api/users/:id/wishlist").post(async (req, res) => {
   }
 });
 
-userRoutes.route("/api/users/:id/wishlist/:cid").delete(async (req, res) => {
+userRoutes.route("/api/users/:uid/wishlist/:id").delete(async (req, res) => {
   try {
     const user = await User.findOneAndUpdate(
       {
-        _id: mongoose.Types.ObjectId(req.params.id),
+        _id: mongoose.Types.ObjectId(req.params.uid),
       },
       {
-        $pull: { wishlist: req.params.cid },
+        $pull: { wishlist: mongoose.Types.ObjectId(req.params.id) },
       }
     );
     res.status(responseCodes.ok).json(user);
