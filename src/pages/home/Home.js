@@ -2,6 +2,7 @@ import React from "react";
 import Feed from "../../components/Feed";
 import Create from "../../components/Create";
 import Button from "@mui/material/Button";
+import { Snackbar } from "@mui/material";
 
 function Home() {
   const uid = localStorage.getItem("uid");
@@ -9,6 +10,7 @@ function Home() {
   const [cats, setCats] = React.useState([]);
   const [user, setUser] = React.useState({});
   const [openCreate, setOpenCreate] = React.useState(false);
+  const [openSnack, setOpenSnack] = React.useState(false);
 
   React.useEffect(() => {
     getData();
@@ -29,6 +31,14 @@ function Home() {
     getData();
   };
 
+  const handleDelete = () => {
+    setOpenSnack(true);
+    getData();
+  }
+
+  const handleClose = () => {
+    setOpenSnack(false);
+  };
 
   async function getCurrentUser() {
     const response = await fetch(
@@ -66,10 +76,17 @@ function Home() {
       ) : null}
 
       {Array.from(cats).map((cat, index) => (
-        <Feed data={cat} key={index} onLike={handleLikeEvent} />
+        <Feed data={cat} key={index} onLike={handleLikeEvent} onDelete={handleDelete} />
       ))}
 
       <Create open={openCreate} handleClose={handleCloseDialog} />
+
+      <Snackbar
+        open={openSnack}
+        autoHideDuration={2000}
+        onClose={handleClose}
+        message="Deleted Cat"
+      />
     </div>
   );
 }
