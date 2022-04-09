@@ -14,14 +14,14 @@ const Comment = new mongoose.Schema(
 const Cat = new mongoose.Schema(
     {
         displayName: { type: String },
-        gender: { type: String },
+        gender: { type: String, enum: ['Male', 'Female'] },
         age: { type: String },
         description: { type: String },
         photoURL: { type: String },
         address: { type: String },
         city: { type: String },
-        lat: { type: Number },
-        lng: { type: Number },
+        lat: { type: Number, min: -90, max: 90 },
+        lng: { type: Number, min: -180, max: 180 },
         features: { type: Array, default: [], unique: true, required: false },
         likedBy: { type: Array, default: [], unique: true, required: false },
         comments: [Comment],

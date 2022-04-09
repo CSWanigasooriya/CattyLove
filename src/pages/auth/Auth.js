@@ -26,7 +26,7 @@ function Auth() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(eMessage);
+    return () => { }
   }, [eMessage]);
 
   async function handleSubmit(event) {
@@ -55,7 +55,6 @@ function Auth() {
   }
 
   function renderElement() {
-    console.log(eMessage);
     if (eMessage !== undefined)
       return (
         <Box

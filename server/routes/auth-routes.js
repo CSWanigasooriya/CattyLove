@@ -32,7 +32,6 @@ authRoutes.route("/api/auth/login").post(async (req, res) => {
     if (user) {
       const token = jwt.sign(
         {
-          uid: user._id,
           email: req.body.email,
           password: req.body.password,
         },
