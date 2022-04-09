@@ -12,6 +12,7 @@ import {
   ListItemText,
   Snackbar,
 } from "@mui/material";
+import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -169,11 +170,12 @@ export default function Preview() {
       {cat && (
         <div>
           <Card sx={{ display: "flex" }}>
-            <CardMedia
-              component="img"
-              sx={{ width: 200, p: 2 }}
-              image={cat.photoURL ? cat.photoURL : logoimage}
-            />
+            <div style={{ paddingRight: "2em"}}>
+              <Avatar
+                src={cat.photoURL ? cat.photoURL : logoimage}
+                sx={{ width: "200px", height: "200px" }}
+              />
+            </div>
             <Box sx={{ display: "flex", flexDirection: "column", flexGrow: 1 }}>
               <CardContent sx={{ flex: "1 0 auto" }}>
                 <Box>
