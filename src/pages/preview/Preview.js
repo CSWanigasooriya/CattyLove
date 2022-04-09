@@ -1,6 +1,5 @@
-import { Comment, Delete, Favorite, Send, ThumbUp } from "@mui/icons-material";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
-import NavigationIcon from "@mui/icons-material/Navigation";
+import React, { useEffect } from "react";
+// Import material components
 import {
   Button,
   Chip,
@@ -16,8 +15,6 @@ import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import { blue, red } from "@mui/material/colors";
 import FormControl from "@mui/material/FormControl";
 import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -26,22 +23,30 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import GoogleMapReact from "google-map-react";
-import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { format } from "timeago.js";
+// Import assets
 import logoimage from "../../assets/images/logo.png";
+// Import material colors
+import { blue, red } from "@mui/material/colors";
+// Import material icons
+import { Comment, Delete, Favorite, Send, ThumbUp } from "@mui/icons-material";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import NavigationIcon from "@mui/icons-material/Navigation";
 
-//The location of where the cat currently resides should be given using google maps API.
-
+// Google maps marker
 const Marker = ({ color }) => <div>{<NavigationIcon color={color} />}</div>;
 
 export default function Preview() {
+  // Default latitute and longitute coordinates
   const center = { lat: 6.9366020011364125, lng: 79.84251072596648 };
   const zoom = 5;
+  // Get userid
   const uid = localStorage.getItem("uid");
 
   let { id } = useParams();
 
+  // State variables
   const [values, setValues] = React.useState({
     comment: "",
   });
@@ -49,6 +54,7 @@ export default function Preview() {
   const [cat, setCat] = React.useState({});
   const [openSnack, setOpenSnack] = React.useState(false);
 
+  // React Hook (triggers after DOM updates)
   useEffect(() => {
     getCatDetails().then((data) => {
       getCatComments(data._id);
@@ -56,20 +62,23 @@ export default function Preview() {
     return () => {};
   }, []);
 
+  // Handle delete comment button click
   const handleDeleteComment = (commentId) => {
     deleteComment(commentId).then((data) => {
       getCatComments(data._id);
     });
   };
 
+  // Handle input text (comment)
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
   };
-
+  // Handle comments button
   const handleMouseDownText = (event) => {
     event.preventDefault();
   };
 
+  // Handle comments button click
   const handleClickSend = (event) => {
     setValues({
       ...values,
@@ -80,12 +89,14 @@ export default function Preview() {
     });
   };
 
+  // Handle add to wishlist button click
   const handleAddToWishlist = (event) => {
     addToWishlist().then((data) => {
       if (data) setOpenSnack(true);
     });
   };
 
+  // Get all cat details (all details in json)
   async function getCatDetails() {
     const response = await fetch(`http://localhost:4000/api/cats/${id}`, {
       method: "GET",
@@ -98,6 +109,7 @@ export default function Preview() {
     return data;
   }
 
+  // Post a comment
   async function setCatComment() {
     const response = await fetch(
       `http://localhost:4000/api/cats/${cat._id}/comments/`,
@@ -117,6 +129,7 @@ export default function Preview() {
     return data;
   }
 
+  // Get all comments
   async function getCatComments(cid) {
     const response = await fetch(
       `http://localhost:4000/api/cats/${cid}/comments/`,
@@ -132,6 +145,7 @@ export default function Preview() {
     return data;
   }
 
+  // Delete a comment
   async function deleteComment(commentId) {
     const response = await fetch(
       `http://localhost:4000/api/cats/${cat._id}/comments/${commentId}`,
@@ -146,6 +160,7 @@ export default function Preview() {
     return data;
   }
 
+  // Add a cat to wishlist
   async function addToWishlist() {
     const uid = localStorage.getItem("uid");
     const response = await fetch(
@@ -170,7 +185,8 @@ export default function Preview() {
       {cat && (
         <div>
           <Card sx={{ display: "flex" }}>
-            <div style={{ paddingTop: "1em", paddingLeft: "1em"}}>
+            <div style={{ paddingTop: "1em", paddingLeft: "1em" }}>
+              {/* Display enlarged cat profile picture */}
               <Avatar
                 src={cat.photoURL ? cat.photoURL : logoimage}
                 sx={{ width: "200px", height: "200px" }}
@@ -179,6 +195,7 @@ export default function Preview() {
             <Box sx={{ display: "flex", flexDirection: "column", flexGrow: 1 }}>
               <CardContent sx={{ flex: "1 0 auto" }}>
                 <Box>
+                  {/* Cat Name */}
                   <Typography
                     component="div"
                     variant="h4"
@@ -186,6 +203,8 @@ export default function Preview() {
                   >
                     {cat.displayName}
                   </Typography>
+
+                  {/* Created time */}
                   <Typography
                     variant="subtitle1"
                     color="textSecondary"
@@ -195,6 +214,8 @@ export default function Preview() {
                   </Typography>
                 </Box>
                 <Divider />
+
+                {/* Cat Age */}
                 <Typography
                   variant="subtitle1"
                   color="text.secondary"
@@ -202,6 +223,8 @@ export default function Preview() {
                 >
                   <b> Age:</b> {cat.age}
                 </Typography>
+
+                {/* Cat Gender */}
                 <Typography
                   variant="subtitle1"
                   color="text.secondary"
@@ -209,6 +232,8 @@ export default function Preview() {
                 >
                   <b> Gender:</b> {cat.gender}
                 </Typography>
+
+                {/* Address */}
                 <Typography
                   variant="subtitle1"
                   color="text.secondary"
@@ -216,6 +241,8 @@ export default function Preview() {
                 >
                   <b> Address:</b> {cat.address ? cat.address : "N/A"}
                 </Typography>
+
+                {/* City */}
                 <Typography
                   variant="subtitle1"
                   color="text.secondary"
@@ -223,6 +250,7 @@ export default function Preview() {
                 >
                   <b> City:</b> {cat.city ? cat.city : "N/A"}
                 </Typography>
+                {/* Cat description */}
                 <Typography
                   variant="subtitle1"
                   color="text.secondary"
@@ -230,6 +258,8 @@ export default function Preview() {
                 >
                   <b> Description:</b> {cat.description}
                 </Typography>
+
+                {/* Cat features */}
                 <Typography
                   variant="subtitle1"
                   color="text.secondary"
@@ -257,10 +287,13 @@ export default function Preview() {
               </CardContent>
 
               <Box sx={{ display: "flex", alignItems: "center", pl: 1, pb: 1 }}>
+                {/* Coordinates */}
                 <Button disableRipple>
                   <LocationOnIcon sx={{ mr: 1 }} />
                   {cat.lat && cat.lng ? `${cat.lat} , ${cat.lng}` : "N/A"}
                 </Button>
+
+                {/* Number of Likes */}
                 <Button disableRipple>
                   <ThumbUp sx={{ mr: 1 }} />
                   {cat && cat.likedBy ? cat.likedBy.length : 0}{" "}
@@ -270,6 +303,8 @@ export default function Preview() {
                       : "likes"
                     : "likes"}
                 </Button>
+
+                {/* Number of comments */}
                 <Button disableRipple>
                   <Comment sx={{ mr: 1 }} />
                   {cat && cat.comments ? cat.comments.length : 0}{" "}
@@ -279,6 +314,8 @@ export default function Preview() {
                       : "comments"
                     : "comment"}
                 </Button>
+
+                {/* Add to wishlist */}
                 <Button
                   disableRipple
                   onClick={(event) => handleAddToWishlist()}
@@ -290,6 +327,7 @@ export default function Preview() {
             </Box>
           </Card>
 
+          {/* START -- Show location on Google Maps -- */}
           {cat && cat.lng && cat.lat ? (
             <div style={{ height: "50vh" }}>
               <GoogleMapReact
@@ -310,6 +348,7 @@ export default function Preview() {
           ) : (
             <div></div>
           )}
+          {/* END -- Show location on Google Maps -- */}
 
           <Card sx={{ display: "flex" }}>
             <CardContent sx={{ flex: "1 0 auto" }}>
@@ -318,6 +357,7 @@ export default function Preview() {
               </Typography>
               <Divider />
 
+              {/* START -- Display comments card -- */}
               {cat && cat.comments ? (
                 <List>
                   {Array.from(comments).map((data, index) => (
@@ -356,7 +396,9 @@ export default function Preview() {
                   No comments yet.
                 </Typography>
               )}
+              {/* END -- Display comments card -- */}
 
+              {/* START -- Post a comment -- */}
               <Grid
                 component="form"
                 onSubmit={(e) => {
@@ -386,9 +428,10 @@ export default function Preview() {
                   />
                 </FormControl>
               </Grid>
+              {/* END -- Post a comment -- */}
             </CardContent>
           </Card>
-
+          {/* Display message */}
           <Snackbar
             open={openSnack}
             autoHideDuration={2000}

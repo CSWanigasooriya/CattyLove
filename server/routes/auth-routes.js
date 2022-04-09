@@ -22,13 +22,16 @@ authRoutes.route("/api/auth/register").post(async (req, res) => {
   }
 });
 
+// POST authentication API
 authRoutes.route("/api/auth/login").post(async (req, res) => {
   console.log(req.body);
   try {
+    // Check credentials
     const user = await User.findOne({
       email: req.body.email,
       password: req.body.password,
     });
+    // If user exists then Respond OK, send json
     if (user) {
       const token = jwt.sign(
         {
@@ -38,6 +41,7 @@ authRoutes.route("/api/auth/login").post(async (req, res) => {
         process.env.JWT_SECRET
       );
       res.status(responseCodes.ok).json({ uid: user._id, token });
+    // Else send error message
     } else {
       res.status(responseCodes.unauthorized).json({
         errorMessage: "Incorrect email or password, Please try again.",

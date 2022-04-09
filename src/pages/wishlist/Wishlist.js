@@ -1,4 +1,5 @@
-import { Delete } from "@mui/icons-material";
+import React from "react";
+// Import material components
 import {
   Divider,
   IconButton,
@@ -7,25 +8,31 @@ import {
   Typography,
 } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
-import { red } from "@mui/material/colors";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemText from "@mui/material/ListItemText";
-import React from "react";
 import { useNavigate } from "react-router-dom";
+// Import material colors
+import { red } from "@mui/material/colors";
+//  Import material icons
+import { Delete } from "@mui/icons-material";
 
 export default function Wishlist() {
+  // Get userid
   const uid = localStorage.getItem("uid");
   const navigate = useNavigate();
+  // State variables
   const [openSnack, setOpenSnack] = React.useState(false);
   const [wishlist, setWishlist] = React.useState([]);
 
+  // React Hook (triggers after DOM updates)
   React.useEffect(() => {
     getWishlistedCats();
-    return () => { };
+    return () => {};
   }, []);
 
+  // Handle delete button click
   const handleDelete = (id) => {
     console.log(id);
     removeFromWishlist(id).then((data) => {
@@ -36,10 +43,12 @@ export default function Wishlist() {
     });
   };
 
+  // On item click navigate to preview page
   const handleItemClick = (id) => {
     navigate(`/cat/${id}/preview`);
   };
 
+  // Get all wishlisted cats (GET)
   async function getWishlistedCats() {
     const response = await fetch(
       `http://localhost:4000/api/users/${uid}/wishlist`,
@@ -52,11 +61,12 @@ export default function Wishlist() {
     );
     const data = await response.json();
 
-    setWishlist([...data]);
+    setWishlist([...data]); // Set json data
 
     return data;
   }
 
+  // Remove a cat from wishlist
   async function removeFromWishlist(id) {
     const response = await fetch(
       `http://localhost:4000/api/users/${uid}/wishlist/${id}`,
@@ -84,9 +94,12 @@ export default function Wishlist() {
               button
               onClick={(event) => handleItemClick(cat._id)}
             >
+              {/* START -- Display cat profile image -- */}
               <ListItemAvatar>
                 <Avatar alt="" src={cat.photoURL} />
               </ListItemAvatar>
+              {/* END -- Display cat profile image -- */}
+              {/* START -- Display cat details -- */}
               <ListItemText
                 primary={cat.displayName}
                 secondary={
@@ -103,6 +116,8 @@ export default function Wishlist() {
                   </React.Fragment>
                 }
               />
+              {/* END -- Display cat details -- */}
+              {/* START -- Delete button --*/}
               <ListItemSecondaryAction>
                 <IconButton
                   onClick={(event) => {
@@ -112,12 +127,13 @@ export default function Wishlist() {
                   <Delete sx={{ color: red[500] }} />
                 </IconButton>
               </ListItemSecondaryAction>
+              {/* END -- Delete button -- */}
             </ListItem>
             <Divider variant="inset" component="li" />
           </div>
         ))}
       </List>
-
+      {/* Display message */}
       <Snackbar
         open={openSnack}
         autoHideDuration={2000}
