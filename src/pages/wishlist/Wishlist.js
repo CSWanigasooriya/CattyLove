@@ -23,7 +23,7 @@ export default function Wishlist() {
 
   React.useEffect(() => {
     getWishlistedCats();
-    return () => {};
+    return () => { };
   }, []);
 
   const handleDelete = (id) => {
@@ -85,7 +85,7 @@ export default function Wishlist() {
               onClick={(event) => handleItemClick(cat._id)}
             >
               <ListItemAvatar>
-                <Avatar alt="" src="" />
+                <Avatar alt="" src={cat.photoURL} />
               </ListItemAvatar>
               <ListItemText
                 primary={cat.displayName}

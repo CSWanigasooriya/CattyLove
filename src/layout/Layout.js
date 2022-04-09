@@ -76,7 +76,7 @@ function Layout(props) {
     if (!isAuthenticated()) {
       navigate("/");
     }
-    return () => {};
+    return () => { };
   }, []);
 
   const [open, setOpen] = React.useState(true);
@@ -84,6 +84,7 @@ function Layout(props) {
   const openEl = Boolean(anchorEl);
 
   const handleClick = (event) => {
+    setOpen(true);
     setAnchorEl(event.currentTarget);
   };
 
