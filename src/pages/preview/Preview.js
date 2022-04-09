@@ -170,7 +170,7 @@ export default function Preview() {
       {cat && (
         <div>
           <Card sx={{ display: "flex" }}>
-            <div style={{ paddingRight: "2em"}}>
+            <div style={{ paddingTop: "1em", paddingLeft: "1em"}}>
               <Avatar
                 src={cat.photoURL ? cat.photoURL : logoimage}
                 sx={{ width: "200px", height: "200px" }}
