@@ -50,14 +50,17 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-let options = ["Add to Wishlist"];
+let userOptions = ["Add to Wishlist"];
+let adminOptions = ["Delete"];
 
 export default function Feed(props) {
   const uid = localStorage.getItem("uid");
+  const [user, setUser] = React.useState({});
 
   React.useEffect(() => {
     getCatComments();
-    return () => {};
+    getCurrentUser();
+    return () => { };
   }, []);
 
   const navigate = useNavigate();
@@ -122,11 +125,17 @@ export default function Feed(props) {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleMenuItemClick = (event, index) => {
+  const handleMenuItemClick = (event, index, option) => {
     setSelectedIndex(index);
     setAnchorEl(null);
-    addToWishlist();
-    setOpenSnack(true);
+
+    if (option === "Delete") {
+      deleteCat();
+      props.onDelete(true)
+    } else {
+      addToWishlist();
+      setOpenSnack(true);
+    }
   };
 
   //Handle Like Button Click
@@ -248,6 +257,36 @@ export default function Feed(props) {
     return data;
   }
 
+  async function deleteCat() {
+    const response = await fetch(
+      `http://localhost:4000/api/cats/${props.data._id}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = await response.json();
+    return data;
+  }
+
+  async function getCurrentUser() {
+    const response = await fetch(
+      `http://localhost:4000/api/users/${uid}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = await response.json();
+    setUser(data);
+    return data;
+  }
+
+
   return (
     <div>
       <Card
@@ -281,15 +320,27 @@ export default function Feed(props) {
             role: "listbox",
           }}
         >
-          {options.map((option, index) => (
-            <MenuItem
-              key={option}
-              selected={index === selectedIndex}
-              onClick={(event) => handleMenuItemClick(event, index)}
-            >
-              {option}
-            </MenuItem>
-          ))}
+          {user && user.role === 'admin' ? (
+            adminOptions.map((option, index) => (
+              <MenuItem
+                key={option}
+                selected={index === selectedIndex}
+                onClick={(event) => handleMenuItemClick(event, index, option)}
+              >
+                {option}
+              </MenuItem>
+            ))
+          ) :
+            userOptions.map((option, index) => (
+              <MenuItem
+                key={option}
+                selected={index === selectedIndex}
+                onClick={(event) => handleMenuItemClick(event, index, option)}
+              >
+                {option}
+              </MenuItem>
+            ))
+          }
         </Menu>
         <CardContent>
           <Typography
