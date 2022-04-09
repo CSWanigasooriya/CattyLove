@@ -294,9 +294,9 @@ export default function Feed(props) {
       >
         <CardHeader
           avatar={
-            <Avatar sx={{ bgcolor: red[500] }}>
+            <Avatar sx={{ bgcolor: red[500]}}>
               {props.data.photoURL ? (
-                <img src={props.data.photoURL} alt="" />
+                <img src={props.data.photoURL} style={{flex: 1, width: '100%', height: '100%', resizeMode: 'contain'}} alt="" />
               ) : (
                 props.data.displayName.charAt(0)
               )}
