@@ -1,8 +1,10 @@
-import { Favorite, Home, Logout } from "@mui/icons-material";
+import React from "react";
+// Import material components
+import { Avatar, Menu, MenuItem, Tooltip } from "@mui/material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import MenuIcon from "@mui/icons-material/Menu";
-import { Avatar, Menu, MenuItem, Tooltip } from "@mui/material";
+import PetsIcon from "@mui/icons-material/Pets";
 import MuiAppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -17,10 +19,12 @@ import { styled, useTheme } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import PropTypes from "prop-types";
-import React from "react";
+
 import { Outlet, useNavigate } from "react-router-dom";
+// Import assets
 import logoimage from "../assets/images/logo.png";
-import PetsIcon from '@mui/icons-material/Pets';
+// Import material icons
+import { Favorite, Home, Logout } from "@mui/icons-material";
 
 const drawerWidth = 240;
 
@@ -73,7 +77,6 @@ function Layout(props) {
   const navigate = useNavigate();
   const theme = useTheme();
 
-
   const uid = localStorage.getItem("uid");
   const [user, setUser] = React.useState({});
 
@@ -82,7 +85,7 @@ function Layout(props) {
     if (!isAuthenticated()) {
       navigate("/");
     }
-    return () => { };
+    return () => {};
   }, []);
 
   const [open, setOpen] = React.useState(true);
@@ -138,15 +141,12 @@ function Layout(props) {
   };
 
   async function getCurrentUser() {
-    const response = await fetch(
-      `http://localhost:4000/api/users/${uid}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const response = await fetch(`http://localhost:4000/api/users/${uid}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     const data = await response.json();
     setUser(data);
     return data;
@@ -291,7 +291,9 @@ function Layout(props) {
             <ListItemIcon>
               {user && user.role === "admin" ? <PetsIcon /> : <Home />}
             </ListItemIcon>
-            <ListItemText primary={user && user.role === "admin" ? 'All Cats' : 'Home'} />
+            <ListItemText
+              primary={user && user.role === "admin" ? "All Cats" : "Home"}
+            />
           </ListItem>
         </List>
         <Divider />

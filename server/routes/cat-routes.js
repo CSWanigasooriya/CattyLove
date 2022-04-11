@@ -67,6 +67,7 @@ catRoutes.route("/api/cats/:id/like").put(async (req, res) => {
   }
 });
 
+// Delete a cat
 catRoutes.route("/api/cats/:id").delete(async (req, res) => {
   try {
     const cat = await Cat.findById(req.params.id);
@@ -77,6 +78,7 @@ catRoutes.route("/api/cats/:id").delete(async (req, res) => {
   }
 });
 
+// Get comments
 catRoutes.route("/api/cats/:id/comments").get(async (req, res) => {
   try {
     const cat = await Cat.findById(req.params.id);
@@ -86,6 +88,7 @@ catRoutes.route("/api/cats/:id/comments").get(async (req, res) => {
   }
 });
 
+// Post a comment
 catRoutes.route("/api/cats/:id/comments").post(async (req, res) => {
   try {
     const cat = await Cat.findOneAndUpdate(
@@ -108,6 +111,7 @@ catRoutes.route("/api/cats/:id/comments").post(async (req, res) => {
   }
 });
 
+// Delete a comment
 catRoutes
   .route("/api/cats/:id/comments/:commentId")
   .delete(async (req, res) => {
