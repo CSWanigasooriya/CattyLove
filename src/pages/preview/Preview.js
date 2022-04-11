@@ -10,13 +10,12 @@ import {
   ListItem,
   ListItemSecondaryAction,
   ListItemText,
-  Snackbar,
+  Snackbar
 } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
 import { blue, red } from "@mui/material/colors";
 import FormControl from "@mui/material/FormControl";
 import IconButton from "@mui/material/IconButton";
@@ -53,7 +52,7 @@ export default function Preview() {
     getCatDetails().then((data) => {
       getCatComments(data._id);
     });
-    return () => {};
+    return () => { };
   }, []);
 
   const handleDeleteComment = (commentId) => {
@@ -170,7 +169,7 @@ export default function Preview() {
       {cat && (
         <div>
           <Card sx={{ display: "flex" }}>
-            <div style={{ paddingTop: "1em", paddingLeft: "1em"}}>
+            <div style={{ paddingTop: "1em", paddingLeft: "1em" }}>
               <Avatar
                 src={cat.photoURL ? cat.photoURL : logoimage}
                 sx={{ width: "200px", height: "200px" }}

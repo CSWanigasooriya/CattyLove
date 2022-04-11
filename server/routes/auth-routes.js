@@ -10,6 +10,8 @@ const responseCodes = require("../models/response-codes");
 
 const User = require("../models/user.model");
 
+// Register a user
+
 authRoutes.route("/api/auth/register").post(async (req, res) => {
   try {
     const user = await User.create({

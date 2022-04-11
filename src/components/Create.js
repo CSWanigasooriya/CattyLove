@@ -1,5 +1,5 @@
 import CloseIcon from "@mui/icons-material/Close";
-import { Grid, Snackbar } from "@mui/material";
+import { Alert, Grid, Snackbar } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -40,6 +40,7 @@ export default function Create(props) {
   const [feature, setFeature] = React.useState([]);
   const [values, setValues] = useState(initialValues);
   const [openSnack, setOpenSnack] = React.useState(false);
+  const [openError, setErrorSnack] = React.useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -50,6 +51,7 @@ export default function Create(props) {
 
   const handleClose = () => {
     setOpenSnack(false);
+    setErrorSnack(false);
   };
 
   async function setCatData() {
@@ -77,6 +79,10 @@ export default function Create(props) {
     });
 
     const jsonData = await response.json();
+    if (jsonData.error) {
+      setErrorSnack(true);
+      return false;
+    }
     return jsonData;
   }
 
@@ -275,8 +281,21 @@ export default function Create(props) {
         open={openSnack}
         autoHideDuration={2000}
         onClose={handleClose}
-        message="Cat created successfully"
-      />
+      >
+        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+          Cat created successfully
+        </Alert>
+      </Snackbar>
+
+      <Snackbar
+        open={openError}
+        autoHideDuration={2000}
+        onClose={handleClose}
+      >
+        <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+          Failed to create cat.
+        </Alert>
+      </Snackbar>
     </div>
   );
 }
