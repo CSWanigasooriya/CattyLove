@@ -10,13 +10,18 @@ const responseCodes = require("../models/response-codes");
 
 const User = require("../models/user.model");
 
+const bcrypt = require('bcrypt')
+
+
 // Register a user
 
 authRoutes.route("/api/auth/register").post(async (req, res) => {
+  const hashedPassword = await bcrypt.hash(req.body.password, 10)
+
   try {
     const user = await User.create({
       email: req.body.email,
-      password: req.body.password,
+      password: hashedPassword,
     });
     res.status(responseCodes.ok).json(user);
   } catch (err) {
@@ -26,15 +31,17 @@ authRoutes.route("/api/auth/register").post(async (req, res) => {
 
 // POST authentication API
 authRoutes.route("/api/auth/login").post(async (req, res) => {
+
+
   console.log(req.body);
   try {
     // Check credentials
     const user = await User.findOne({
       email: req.body.email,
-      password: req.body.password,
     });
     // If user exists then Respond OK, send json
-    if (user) {
+
+    if (await bcrypt.compare(req.body.password, user.password)) {
       const token = jwt.sign(
         {
           email: req.body.email,
@@ -43,8 +50,9 @@ authRoutes.route("/api/auth/login").post(async (req, res) => {
         process.env.JWT_SECRET
       );
       res.status(responseCodes.ok).json({ uid: user._id, token });
+    }
     // Else send error message
-    } else {
+    else {
       res.status(responseCodes.unauthorized).json({
         errorMessage: "Incorrect email or password, Please try again.",
       });

@@ -1,23 +1,21 @@
-import React, { useEffect, useState } from "react";
+import Box from "@mui/material/Box";
 // Import material components
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
-import Checkbox from "@mui/material/Checkbox";
-import FormControlLabel from "@mui/material/FormControlLabel";
+// Import material colors
+import { blue, grey, red } from "@mui/material/colors";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 // Import assets
 import loginimage from "../../assets/images/login_image.png";
 import logoimage from "../../assets/images/logo.png";
-// Import material colors
-import { blue, grey, red } from "@mui/material/colors";
-
+import LoginButton from "../../components/GoogleButton";
 const initialValues = {
   email: "",
   password: "",
@@ -32,11 +30,13 @@ function Auth() {
 
   // React Hook (triggers after DOM updates)
   useEffect(() => {
-    return () => {};
+
+    return () => { };
   }, [eMessage]);
 
   // Handle submit login info (POST login details)
   async function handleSubmit(event) {
+
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const repsonse = await fetch("http://localhost:4000/api/auth/login", {
@@ -52,7 +52,7 @@ function Auth() {
 
     const jsonData = await repsonse.json();
 
-    // If credentials are valid then navigate to home
+    //If credentials are valid then navigate to home
     if (jsonData.uid) {
       localStorage.setItem("uid", jsonData.uid);
       localStorage.setItem("token", jsonData.token);
@@ -61,6 +61,7 @@ function Auth() {
       // Else set error message
       setErrorMessage(jsonData.errorMessage);
     }
+
   }
 
   // Show error message
@@ -154,10 +155,7 @@ function Auth() {
                 autoComplete="current-password"
               />
               {/* Remember Me checkbox */}
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              />
+
               {/* Sign In button */}
               <Button
                 style={{ borderRadius: "2em", marginTop: "1em" }}
@@ -167,13 +165,15 @@ function Auth() {
               >
                 Sign In
               </Button>
+
+              <LoginButton />
               {/* Initially hide this, onSubmit show error message */}
               {renderElement()}
             </CardContent>
 
             <CardActions sx={{ m: 1 }}>
-              <Typography variant="caption">Create Account</Typography>
-              <Typography variant="caption" sx={{ color: red[500] }}>
+              <Typography variant="caption" sx={{ cursor: "pointer" }} onClick={() => { navigate('/sign-up') }}>Create Account</Typography>
+              <Typography variant="caption" sx={{ color: red[500], cursor: "pointer" }}>
                 Forgot Password?
               </Typography>
             </CardActions>
