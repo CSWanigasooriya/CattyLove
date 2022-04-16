@@ -1,10 +1,12 @@
-import React from "react";
-// Import material components
-import { Avatar, Menu, MenuItem, Tooltip } from "@mui/material";
+import { useAuth0 } from "@auth0/auth0-react";
+// Import material icons
+import { Favorite, Home, Logout } from "@mui/icons-material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import MenuIcon from "@mui/icons-material/Menu";
 import PetsIcon from "@mui/icons-material/Pets";
+// Import material components
+import { Avatar, Menu, MenuItem, Tooltip } from "@mui/material";
 import MuiAppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -19,12 +21,11 @@ import { styled, useTheme } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import PropTypes from "prop-types";
-
+import React from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 // Import assets
 import logoimage from "../assets/images/logo.png";
-// Import material icons
-import { Favorite, Home, Logout } from "@mui/icons-material";
+
 
 const drawerWidth = 240;
 
@@ -74,6 +75,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 }));
 
 function Layout(props) {
+
   const navigate = useNavigate();
   const theme = useTheme();
 
@@ -82,10 +84,10 @@ function Layout(props) {
 
   React.useEffect(() => {
     getCurrentUser();
-    if (!isAuthenticated()) {
+    if (!isDBAuthenticated()) {
       navigate("/");
     }
-    return () => {};
+    return () => { };
   }, []);
 
   const [open, setOpen] = React.useState(true);
@@ -116,7 +118,7 @@ function Layout(props) {
     }
   };
 
-  function isAuthenticated() {
+  function isDBAuthenticated() {
     const jwtToken = localStorage.getItem("token");
     if (jwtToken === null || jwtToken === undefined) {
       return false;
@@ -152,10 +154,12 @@ function Layout(props) {
     return data;
   }
 
+  const { logout } = useAuth0();
+
   function signOut() {
     localStorage.removeItem("uid");
     localStorage.removeItem("token");
-    navigate("/");
+    logout({ returnTo: window.location.origin });
   }
 
   return (
